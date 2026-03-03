@@ -1,5 +1,5 @@
 // app.js - Logique principale de l'application
-//test
+// test
 
 const CACHE_NAME = 'envol-pwa-v2.0';
 const userAgent = navigator.userAgent;
