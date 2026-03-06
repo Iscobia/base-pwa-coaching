@@ -1,11 +1,29 @@
 // app.js - Logique principale de l'application
-// test
 
-const CACHE_NAME = 'envol-pwa-v2.0';
 const userAgent = navigator.userAgent;
-const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent);
+const isSafari = /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent);
 
-let jourActuel = parseInt(localStorage.getItem('jour_actuel'), 10) || 1;
+// Config par app (chargée via config.js dans chaque repo enfant)
+const APP = window.APP_CONFIG || {};
+const APP_ID = APP.ID || "app";
+const APP_NAME = APP.NAME || "APP";
+
+// Cache name isolé par app (utile surtout pour Service Worker / caches)
+const CACHE_NAME = APP.CACHE_NAME || `${APP_ID}-pwa-v1`;
+
+// Stockage isolé par app
+const STORAGE_PREFIX = APP.STORAGE_PREFIX || `${APP_ID}_`;
+
+// Helpers localStorage (pour éviter les oublis getItem/removeItem)
+const storageKey = (k) => `${STORAGE_PREFIX}${k}`;
+function lsGet(k, fallback = null) {
+  const v = localStorage.getItem(storageKey(k));
+  return v === null ? fallback : v;
+}
+function lsSet(k, v) { localStorage.setItem(storageKey(k), v); }
+function lsRemove(k) { localStorage.removeItem(storageKey(k)); }
+
+let jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
 let jourAffiche = jourActuel;
 
 // === On attend que envol-notifications.js soit chargé :
@@ -161,11 +179,11 @@ function showInstallOverlay() {
   overlay.innerHTML = `
     <div style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:9999; display:flex; align-items:center; justify-content:center;">
       <div style="background:white; padding:30px; border-radius:20px; max-width:400px; text-align:center;">
-        <h2>Installer ENVOL ?</h2>
+        <h2>Installer `${APP_NAME}` ?</h2>
         <p>Pour un accès rapide depuis ton écran d'accueil,</p>
         <div id="install-instructions">
           <p>👇🏻 clique sur le bouton jaune👇🏻</p>
-          <p>"📱 Installer ENVOL sur l'écran d'accueil"</p>
+          <p>"📱 Installer `${APP_NAME}` sur l'écran d'accueil"</p>
           <p>ou</p>
           <p><strong>Android :</strong> Menu → "Ajouter à l'écran d'accueil"</p>
           <p><strong>iOS :</strong> Partager → "Sur l'écran d'accueil"</p>
@@ -179,12 +197,12 @@ function showInstallOverlay() {
   document.body.appendChild(overlay);
   document.getElementById('close-overlay').addEventListener('click', () => {
     overlay.remove();
-    localStorage.setItem('install_prompt_shown', 'true');
+    localStorage.setItem(STORAGE_PREFIX + 'install_prompt_shown', 'true');
   });
   setTimeout(() => {
     if (document.getElementById('install-overlay')) {
       document.getElementById('install-overlay').remove();
-      localStorage.setItem('install_prompt_shown', 'true');
+      localStorage.setItem(STORAGE_PREFIX + 'install_prompt_shown', 'true');
     }
   }, 10000);
 }
@@ -284,7 +302,7 @@ function checkForUpdates() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 Initialisation ENVOL...');
+  console.log('🚀 Initialisation `${APP_NAME}`...');
       debugOneSignal();
     
 
@@ -391,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const madeupDefis = JSON.parse(localStorage.getItem('defis_madeup') || '[]');
                 if (!madeupDefis.includes(jourCible)) {
                   madeupDefis.push(jourCible);
-                  localStorage.setItem('defis_madeup', JSON.stringify(madeupDefis));
+                  localStorage.setItem(STORAGE_PREFIX + 'defis_madeup', JSON.stringify(madeupDefis));
                   alert("✨ Défi rattrapé avec succès !");
                 } else {
                   alert("✨ Ce défi est déjà rattrapé.");
@@ -461,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Nouvelle propriété : défis "rattrapés" (ratés mais validés après)
     function initMadeupDefis() {
       if (!localStorage.getItem('defis_madeup')) {
-        localStorage.setItem('defis_madeup', JSON.stringify([]));
+        localStorage.setItem(STORAGE_PREFIX + 'defis_madeup', JSON.stringify([]));
       }
     }
 
@@ -478,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Premier accès
       if (!dernierAcces) {
-        localStorage.setItem('dernier_acces', aujourdhui);
+        localStorage.setItem(STORAGE_PREFIX + 'dernier_acces', aujourdhui);
         return jourActuel;
       }
       
@@ -506,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Mettre à jour le dernier accès
-        localStorage.setItem('dernier_acces', aujourdhui);
+        localStorage.setItem(STORAGE_PREFIX + 'dernier_acces', aujourdhui);
       }
       
       return jourActuel;
@@ -533,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
          // ✅ Premier accès : on initialise, mais on N'AVANCE PAS
         if (!dernierChangement) {
           console.log('✅ Premier accès - initialisation (pas d’avancement)');
-          localStorage.setItem('dernier_changement_jour', aujourdhui);
+          localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhui);
           return false;
         }
 
@@ -598,7 +616,7 @@ function verifierEtAvancerJour() {
 
     // Premier lancement : on pose juste la référence, sans avancer
     if (!dernierStr) {
-      localStorage.setItem('dernier_changement_jour', aujourdhuiStr);
+      localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhuiStr);
       console.log('✅ Premier lancement : dernier_changement_jour initialisé (pas d’avancement)');
     } else {
       // Si la date a changé, on calcule combien de jours se sont écoulés
@@ -609,7 +627,7 @@ function verifierEtAvancerJour() {
         
         if (!ancienneDate || !nouvelleDate) {
           console.warn('⚠️ Date invalide détectée -> resync dernier_changement_jour', { dernierStr, aujourdhuiStr });
-          localStorage.setItem('dernier_changement_jour', aujourdhuiStr);
+          localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhuiStr);
           return jourActuel; // on ne casse pas l’app
         }
         
@@ -623,18 +641,18 @@ function verifierEtAvancerJour() {
           const nouveauJour = Math.min(77, jourActuel + diffJours);
           if (nouveauJour !== jourActuel) {
             jourActuel = nouveauJour;
-            localStorage.setItem('jour_actuel', String(jourActuel));
+            localStorage.setItem(STORAGE_PREFIX + 'jour_actuel', String(jourActuel));
             console.log(`🎯 AVANCÉ de ${diffJours} jour(s) -> jour_actuel:`, jourActuel);
           } else {
             console.log('⏸️ Déjà au max (77), pas d’avancement');
           }
 
           // Important : on met à jour la date de référence
-          localStorage.setItem('dernier_changement_jour', aujourdhuiStr);
+          localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhuiStr);
         } else {
           console.log('⏸️ Date différente mais diffJours <= 0 (heure/date système ?) — pas d’avancement');
           // On peut quand même resynchroniser la date si tu veux être stricte :
-          // localStorage.setItem('dernier_changement_jour', aujourdhuiStr);
+          // localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhuiStr);
         }
       } else {
         console.log('❌ Même jour - bloqué');
@@ -692,7 +710,7 @@ function setNoteForDay(day, text) {
   } else {
     notes[k] = v;
   }
-  localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+  localStorage.setItem(STORAGE_PREFIX + NOTES_KEY, JSON.stringify(notes));
 }
 
 // ===== Fin des Notes (stockées localement) =====
@@ -831,7 +849,7 @@ function setNoteForDay(day, text) {
       notificationTimeSelect.value = heureSauvegardee;
 
       notificationTimeSelect.addEventListener('change', function() {
-        localStorage.setItem('heure_notification', notificationTimeSelect.value);
+        localStorage.setItem(STORAGE_PREFIX + 'heure_notification', notificationTimeSelect.value);
         console.log('⏰ Heure de notification sauvegardée:', notificationTimeSelect.value);
       });
     }
@@ -855,7 +873,7 @@ function setNoteForDay(day, text) {
     }
     
     function setNotesMap(map) {
-      localStorage.setItem('envol_notes_by_day', JSON.stringify(map));
+      localStorage.setItem(STORAGE_PREFIX + 'envol_notes_by_day', JSON.stringify(map));
     }
     
     function getNoteForDay(day) {
@@ -1000,23 +1018,23 @@ function setNoteForDay(day, text) {
               const backupData = JSON.parse(event.target.result);
               if (!backupData.progression || !backupData.jourActuel) throw new Error('Format invalide');
               if (confirm(`Importer la sauvegarde du ${new Date(backupData.timestamp).toLocaleDateString('fr-FR')} ?`)) {
-              localStorage.setItem('defis_envol', JSON.stringify(backupData.progression));
-              localStorage.setItem('jour_actuel', backupData.jourActuel);
-              if (backupData.dernierChangement) localStorage.setItem('dernier_changement_jour', backupData.dernierChangement);
-              if (backupData.heureNotification) localStorage.setItem('heure_notification', backupData.heureNotification);
+              localStorage.setItem(STORAGE_PREFIX + 'defis_envol', JSON.stringify(backupData.progression));
+              localStorage.setItem(STORAGE_PREFIX + 'jour_actuel', backupData.jourActuel);
+              if (backupData.dernierChangement) localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', backupData.dernierChangement);
+              if (backupData.heureNotification) localStorage.setItem(STORAGE_PREFIX + 'heure_notification', backupData.heureNotification);
               
               // ✅ Notes (par jour)
               if (backupData.notesByDay) {
-                localStorage.setItem('envol_notes_by_day', JSON.stringify(backupData.notesByDay));
+                localStorage.setItem(STORAGE_PREFIX + 'envol_notes_by_day', JSON.stringify(backupData.notesByDay));
               } else if (backupData.notes) {
                 // Compatibilité ancienne sauvegarde "notes"
                 // Si c'était une string -> on la met sur le jourActuel importé
                 if (typeof backupData.notes === 'string') {
                   const day = String(backupData.jourActuel || 1);
-                  localStorage.setItem('envol_notes_by_day', JSON.stringify({ [day]: backupData.notes }));
+                  localStorage.setItem(STORAGE_PREFIX + 'envol_notes_by_day', JSON.stringify({ [day]: backupData.notes }));
                 } else if (typeof backupData.notes === 'object') {
                   // Si c'était déjà un map -> on le reprend tel quel
-                  localStorage.setItem('envol_notes_by_day', JSON.stringify(backupData.notes));
+                  localStorage.setItem(STORAGE_PREFIX + 'envol_notes_by_day', JSON.stringify(backupData.notes));
                 }
               } else {
                 localStorage.removeItem('envol_notes_by_day');
@@ -1046,17 +1064,17 @@ function setNoteForDay(day, text) {
           defi.termine = false;
           defi.dateValidation = null;
         });
-        localStorage.setItem('defis_envol', JSON.stringify(DefisEnvol));
-        localStorage.setItem('jour_actuel', '1');
+        localStorage.setItem(STORAGE_PREFIX + 'defis_envol', JSON.stringify(DefisEnvol));
+        localStorage.setItem(STORAGE_PREFIX + 'jour_actuel', '1');
         
         // Correction bug jour 1 manqué après reset
         const aujourdhui = new Date().toLocaleDateString('fr-FR');
-        localStorage.setItem('dernier_changement_jour', aujourdhui);
+        localStorage.setItem(STORAGE_PREFIX + 'dernier_changement_jour', aujourdhui);
         
-        localStorage.setItem('heure_notification', '08:00');
+        localStorage.setItem(STORAGE_PREFIX + 'heure_notification', '08:00');
         localStorage.removeItem('install_prompt_shown');
         // ✅ Reset des défis rattrapés (sinon le calendrier garde des jours jaunes)
-        localStorage.setItem('defis_madeup', JSON.stringify([]));
+        localStorage.setItem(STORAGE_PREFIX + 'defis_madeup', JSON.stringify([]));
         alert('🗑️ Progression supprimée.');
         window.location.reload();
       });
@@ -1103,7 +1121,7 @@ function setNoteForDay(day, text) {
     const installButton = document.createElement('button');
     installButton.id = 'install-pwa-btn';
     installButton.className = 'install-btn';
-    installButton.textContent = '📱 Installer ENVOL sur l\'écran d\'accueil';
+    installButton.textContent = '📱 Installer `${APP_NAME}` sur l\'écran d\'accueil';
     installButton.style.cssText = `
       display: none;
       width: calc(100% - 40px);
@@ -1196,7 +1214,7 @@ setTimeout(() => {
       // Anti-double déclenchement la même seconde (DOMContentLoaded + visibilitychange)
       const lockKey = 'daily_notif_lock';
       if (localStorage.getItem(lockKey) === today) return false;
-      localStorage.setItem(lockKey, today);
+      localStorage.setItem(STORAGE_PREFIX + lockKey, today);
     
       if (!('Notification' in window)) return false;
       if (Notification.permission !== 'granted') return false;
@@ -1205,30 +1223,31 @@ setTimeout(() => {
         // ✅ Priorité: notif riche via ton pipeline existant
         if (typeof window.envoyerNotificationDuJour === 'function') {
           await window.envoyerNotificationDuJour();
-          localStorage.setItem('last_daily_notif_shown', today);
+          localStorage.setItem(STORAGE_PREFIX + 'last_daily_notif_shown', today);
           return true;
         }
     
         // ✅ Fallback minimaliste (SEULEMENT si la riche n'est pas dispo)
         const reg = await navigator.serviceWorker?.getRegistration?.();
+        const ICON_192 = APP.ICON_192 || "./core/assets/icons/default-192.png";
         if (reg?.showNotification) {
-          await reg.showNotification("ENVOL — Défi du jour", {
+          await reg.showNotification((APP.NOTIF_TITLE || `${APP_NAME} — Défi du jour`), {
             body: "Ton défi du jour t’attend ✨",
-            icon: "./assets/icons/ENVOL-192.png",
-            badge: "./assets/icons/ENVOL-192.png",
+            icon: ICON_192,
+            badge: ICON_192,
             tag: "envol-daily",
             renotify: false
           });
-          localStorage.setItem('last_daily_notif_shown', today);
+          localStorage.setItem(STORAGE_PREFIX + 'last_daily_notif_shown', today);
           return true;
         }
     
         // Dernier fallback: Notification directe
-        new Notification("ENVOL — Défi du jour", {
+        new Notification((APP.NOTIF_TITLE || `${APP_NAME} — Défi du jour`), {
           body: "Ton défi du jour t’attend ✨",
           tag: "envol-daily"
         });
-        localStorage.setItem('last_daily_notif_shown', today);
+        localStorage.setItem(STORAGE_PREFIX + 'last_daily_notif_shown', today);
         return true;
       } catch (e) {
         // si échec -> on retire le lock pour retenter au prochain wake
