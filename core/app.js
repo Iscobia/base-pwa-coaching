@@ -124,6 +124,12 @@ function renderProgramSelector() {
   const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
 
   const allPrograms = {
+    envol: {
+      id: "envol",
+      name: "ENVOL",
+      subtitle: "(Ré)Alignement Corps et Esprit",
+      themeClass: "theme-envol"
+    },
     origine: {
       id: "origine",
       name: "ORIGINE",

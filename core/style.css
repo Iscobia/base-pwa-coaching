@@ -886,6 +886,12 @@ backup-p {margin: 30px 0 2px 0px;}
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
+.program-chip.theme-envol.is-active {
+  background: linear-gradient(160deg, #0b252f 0%, #0e303d 100%);
+  border-color: #0b252f;
+}
+
+
 .program-chip.theme-origine.is-active {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   border-color: #b91c1c;
