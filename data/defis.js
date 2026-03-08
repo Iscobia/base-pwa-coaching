@@ -1404,7 +1404,7 @@ function initializeApp() {
 window.DEFIS_BY_APP = {
   origine: DefisOrigine,
   enveloppe: DefisEnveloppe,
-  emergence: DefisEmergence
+  emergence: DefisEmergence,
   envol: DefisEnvol
 };
 
