@@ -1405,6 +1405,7 @@ window.DEFIS_BY_APP = {
   origine: DefisOrigine,
   enveloppe: DefisEnveloppe,
   emergence: DefisEmergence
+  envol: DefisEnvol
 };
 
 window.DEFIS = window.DEFIS_BY_APP[window.APP_ID];
