@@ -99,7 +99,23 @@ window.APP_CONFIGS = {
     BROWSER_TITLE: "EMERGENCE - Défi Quotidien",
     TOTAL_DAYS: 62,
     SUPPORT_URL: "https://coaching.sekhamet.com/school/course/emergence/"
-  }
+  },
+
+reset: {
+    ID: "reset",
+    NAME: "RESET",
+    STORAGE_PREFIX: "reset_",
+    CACHE_NAME: "reset-pwa-v1",
+    ICON_192: "./core/assets/icons/RESET-192.png",
+    ICON_512: "./core/assets/icons/RESET-512.png",
+    NOTIF_TITLE: "RESET — Défi du jour",
+    INSTALL_TITLE: "Installer RESET ?",
+    INSTALL_LABEL: "📱 Installer RESET sur l'écran d'accueil",
+    MAIN_TITLE: "Reviens à toi, un pas à la fois.",
+    BROWSER_TITLE: "RESET - Défi Quotidien",
+    TOTAL_DAYS: 25,
+    SUPPORT_URL: NaN
+  },
 };
 
 
