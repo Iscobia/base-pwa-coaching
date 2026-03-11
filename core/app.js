@@ -147,6 +147,12 @@ function renderProgramSelector() {
       name: "EMERGENCE",
       subtitle: "Inconscient allié",
       themeClass: "theme-emergence"
+    },
+    reset: {
+      id: "reset",
+      name: "RESET",
+      subtitle: "Reviens à toi, un pas à la fois.",
+      themeClass: "theme-reset"
     }
   };
 
