@@ -14,12 +14,12 @@ const appFromUrl = urlParams.get("app");
 // CHANGER CETTE VARIABLE pour choisir les pages gérées par l'app :
 // variables possibles : ["origine", "enveloppe", "emergence"]
 // puis quand les paramètres seront entrés "fondement" (pour la mini-app bonus sur la préparation de notre environnement pour bien vivre le programme principal) et éventuellement "envol"
-window.ALLOWED_APP_IDS = ["origine", "enveloppe", "emergence","envol","reset"];
+window.ALLOWED_APP_IDS = ["fondation","origine", "enveloppe", "emergence","envol","reset"];
 // Les notifications suivent exactement les mêmes pages
 window.NOTIFICATION_APP_IDS = window.ALLOWED_APP_IDS;
 
 // CHANGER CETTE VARIABLE pour choisir la PAGE PAR DÉFAUT vers laquelle on est redirigé en cas de soucis :
-window.DEFAULT_APP_ID = "reset";
+window.DEFAULT_APP_ID = "fondation";
 window.TECH_SUPPORT_EMAIL = "contact@sekhamet.com";
 
 
@@ -115,6 +115,21 @@ reset: {
     BROWSER_TITLE: "RESET - Défi Quotidien",
     TOTAL_DAYS: 25,
     SUPPORT_URL: NaN
+  },
+  fondation: {
+    ID: "fondation",
+    NAME: "FONDATION",
+    STORAGE_PREFIX: "fondation_",
+    CACHE_NAME: "reset-pwa-v1",
+    ICON_192: "./core/assets/icons/FONDATION-192.png",
+    ICON_512: "./core/assets/icons/FONDATION-512.png",
+    NOTIF_TITLE: "FONDATION — Défi du jour",
+    INSTALL_TITLE: "Installer FONDATION ?",
+    INSTALL_LABEL: "📱 Installer FONDATION sur l'écran d'accueil",
+    MAIN_TITLE: "Reviens à toi, un pas à la fois.",
+    BROWSER_TITLE: "FONDATION - Défi Quotidien",
+    TOTAL_DAYS: 7,
+    SUPPORT_URL: "./core/data/FONDATION_Support.pdf"
   },
 };
 
