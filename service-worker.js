@@ -28,11 +28,20 @@ const urlsToCache = [
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Installation');
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+
+    for (const url of urlsToCache) {
+      try {
+        await cache.add(url);
+        console.log('[SW] Cache OK:', url);
+      } catch (e) {
+        console.warn('[SW] Cache impossible:', url, e);
+      }
+    }
+
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
