@@ -126,7 +126,7 @@ reset: {
     NOTIF_TITLE: "FONDATION — Défi du jour",
     INSTALL_TITLE: "Installer FONDATION ?",
     INSTALL_LABEL: "📱 Installer FONDATION sur l'écran d'accueil",
-    MAIN_TITLE: "Reviens à toi, un pas à la fois.",
+    MAIN_TITLE: "Prépare ton terrain",
     BROWSER_TITLE: "FONDATION - Défi Quotidien",
     TOTAL_DAYS: 7,
     SUPPORT_URL: "./core/data/FONDATION_Support.pdf"
