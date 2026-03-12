@@ -14,15 +14,15 @@ try {
 
 const CACHE_NAME = 'evolution-cache-v1.0.1';
 const urlsToCache = [
-  '/base-pwa-coaching/',
-  '/base-pwa-coaching/index.html',
-  '/base-pwa-coaching/config.js',
-  '/base-pwa-coaching/manifest.json',
-  '/base-pwa-coaching/theme.css',
-  '/base-pwa-coaching/data/defis.js',
-  '/base-pwa-coaching/core/style.css',
-  '/base-pwa-coaching/core/app.js',
-  '/base-pwa-coaching/core/notifications.js'
+  '/',
+  '/index.html',
+  '/config.js',
+  '/manifest.json',
+  '/theme.css',
+  '/data/defis.js',
+  '/core/style.css',
+  '/core/app.js',
+  '/core/notifications.js'
 ];
 
 
