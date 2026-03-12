@@ -120,7 +120,7 @@ reset: {
     ID: "fondation",
     NAME: "FONDATION",
     STORAGE_PREFIX: "fondation_",
-    CACHE_NAME: "reset-pwa-v1",
+    CACHE_NAME: "fondation-pwa-v1",
     ICON_192: "./core/assets/icons/FONDATION-192.png",
     ICON_512: "./core/assets/icons/FONDATION-512.png",
     NOTIF_TITLE: "FONDATION — Défi du jour",
@@ -129,7 +129,7 @@ reset: {
     MAIN_TITLE: "Prépare ton terrain",
     BROWSER_TITLE: "FONDATION - Défi Quotidien",
     TOTAL_DAYS: 7,
-    SUPPORT_URL: "./core/data/FONDATION_Support.pdf"
+    SUPPORT_URL: "https://github.com/Iscobia/base-pwa-coaching/blob/main/data/FONDATION_Support.pdf"
   },
 };
 

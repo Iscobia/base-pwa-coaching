@@ -1678,7 +1678,7 @@ window.DEFIS_BY_APP = {
   emergence: DefisEmergence,
   envol: DefisEnvol,
   reset: DefisReset,
-  fondation:DefisFondation,
+  fondation: DefisFondation,
 };
 
 window.DEFIS = window.DEFIS_BY_APP[window.APP_ID];
