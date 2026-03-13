@@ -893,6 +893,7 @@ backup-p {margin: 30px 0 2px 0px;}
 .program-chip.theme-fondation.is-active {
   background: linear-gradient(160deg, #9c4fc2 0%, #5b2b73 100%);
   border-color: #5b2b73;
+  margin-bottom: 5px!important;
 }
 
 .program-chip.theme-envol.is-active {
