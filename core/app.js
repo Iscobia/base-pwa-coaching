@@ -215,6 +215,62 @@ function renderProgramSelector() {
 }
 
 
+function getProgramFlow() {
+  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
+  const flow = Array.isArray(window.PROGRAM_FLOW) ? window.PROGRAM_FLOW : [];
+
+  return flow.filter(appId =>
+    allowedIds.includes(appId) &&
+    window.APP_CONFIGS &&
+    window.APP_CONFIGS[appId] &&
+    window.DEFIS_BY_APP &&
+    Array.isArray(window.DEFIS_BY_APP[appId])
+  );
+}
+
+function isProgramCompleted(appId) {
+  const defis = window.DEFIS_BY_APP?.[appId];
+  if (!Array.isArray(defis) || defis.length === 0) return false;
+
+  return defis.every(defi => defi.termine === true);
+}
+
+function getRecommendedFlowAppId() {
+  const flow = getProgramFlow();
+
+  if (!flow.length) return window.APP_ID;
+
+  for (const appId of flow) {
+    if (!isProgramCompleted(appId)) {
+      return appId;
+    }
+  }
+
+  return flow[flow.length - 1];
+}
+
+function ensureRecommendedFlowAppSelection() {
+  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
+
+  if (allowedIds.length <= 1) return false;
+
+  const url = new URL(window.location.href);
+  const explicitApp = url.searchParams.get("app");
+
+  // Si l'utilisateur a explicitement choisi une page, on respecte son choix
+  if (explicitApp) return false;
+
+  const recommendedAppId = getRecommendedFlowAppId();
+
+  if (!recommendedAppId || recommendedAppId === window.APP_ID) return false;
+
+  url.searchParams.set("app", recommendedAppId);
+  window.location.replace(url.toString());
+  return true;
+}
+
+
+
 function applyAppBranding() {
   document.title = APP_BROWSER_TITLE;
 
@@ -763,9 +819,11 @@ function checkForUpdates() {
 
 document.addEventListener('DOMContentLoaded', async function() {
     console.log(`🚀 Initialisation ${APP_NAME}...`);
-      setupTechnicalErrorCapture();
-      await loadInstallAppNameFromManifest();
-      debugOneSignal();
+    if (ensureRecommendedFlowAppSelection()) return;
+
+    setupTechnicalErrorCapture();
+    await loadInstallAppNameFromManifest();
+    debugOneSignal();
     
 
     //=============================================================

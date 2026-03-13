@@ -854,8 +854,8 @@ backup-p {margin: 30px 0 2px 0px;}
 .program-selector-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .program-selector-grid[data-layout="duo-with-fondation"] {
@@ -872,7 +872,7 @@ backup-p {margin: 30px 0 2px 0px;}
   text-align: center;
   background: rgba(11, 37, 47, 0.08);
   color: #0b252f;
-  margin-bottom: 40px;
+  margin-bottom: 0;
 }
 
 .program-chip:hover:not(:disabled) {
@@ -893,7 +893,6 @@ backup-p {margin: 30px 0 2px 0px;}
 .program-chip.theme-fondation.is-active {
   background: linear-gradient(160deg, #9c4fc2 0%, #5b2b73 100%);
   border-color: #5b2b73;
-  margin-bottom: 5px!important;
 }
 
 .program-chip.theme-envol.is-active {
@@ -939,8 +938,8 @@ backup-p {margin: 30px 0 2px 0px;}
 
 @media (min-width: 900px) {
   .program-selector-grid {
-    gap: 14px;
-    margin-bottom: 22px;
+    gap: 8px;
+    margin-bottom: 24px;
   }
 
   .program-chip {
