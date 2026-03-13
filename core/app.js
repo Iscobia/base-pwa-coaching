@@ -235,10 +235,39 @@ function isProgramCompleted(appId) {
   return defis.every(defi => defi.termine === true);
 }
 
+
+function isCurrentProgramCompleted() {
+  const defis = window.DEFIS;
+  if (!Array.isArray(defis) || defis.length === 0) return false;
+
+  return defis.every(defi => defi.termine === true);
+}
+
+function updateProgramCompleteOverlay() {
+  const overlay = document.getElementById('program-complete-overlay');
+  const resetLink = document.getElementById('program-complete-reset-link');
+  if (!overlay) return;
+
+  const completed = isCurrentProgramCompleted();
+  overlay.hidden = !completed;
+
+  if (resetLink && !resetLink.dataset.listenerAttached) {
+    resetLink.dataset.listenerAttached = "true";
+    resetLink.addEventListener('click', function () {
+      const resetBtn = document.getElementById('reset-progress-btn');
+      if (resetBtn) {
+        resetBtn.click();
+      }
+    });
+  }
+}
+
+
+
 function getRecommendedFlowAppId() {
   const flow = getProgramFlow();
 
-  if (!flow.length) return window.APP_ID;
+  if (!flow.length) return window.DEFAULT_APP_ID || window.APP_ID;
 
   for (const appId of flow) {
     if (!isProgramCompleted(appId)) {
@@ -246,7 +275,7 @@ function getRecommendedFlowAppId() {
     }
   }
 
-  return flow[flow.length - 1];
+  return window.DEFAULT_APP_ID || flow[0] || window.APP_ID;
 }
 
 function ensureRecommendedFlowAppSelection() {
@@ -1330,6 +1359,8 @@ function setNoteForDay(day, text) {
   // ✅ Mettre à jour le bouton selon l'état du jour affiché
   updateMarkDoneButtonUI(jour);
   refreshNotesUIForDay(jour);
+  // Vérifier s'il faut mettre l'overlay de défis terminés
+  updateProgramCompleteOverlay();
 
   console.log("📌 afficherDefiDuJour appelé avec:", jour, "=> jourAffiche =", jourAffiche);
   }
@@ -1712,6 +1743,7 @@ function setNoteForDay(day, text) {
       if (typeof genererCalendrier === 'function') {
         genererCalendrier();
       }
+      updateProgramCompleteOverlay();
 
       showDailyWakeNotificationsForConfiguredApps().then(results => console.log('🔔 Notifs wake envoyées ?', results));
 
