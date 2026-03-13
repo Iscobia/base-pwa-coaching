@@ -151,9 +151,16 @@ function renderProgramSelector() {
     reset: {
       id: "reset",
       name: "RESET",
-      subtitle: "Reviens à toi, un pas à la fois.",
+      subtitle: "Reviens à toi, un pas à la fois",
       themeClass: "theme-reset"
-    }
+    },
+    fondation: {
+      id: "fondation",
+      name: "FONDATION",
+      subtitle: "Prépare ton terrain",
+      themeClass: "theme-fondation"
+    },
+
   };
 
   const programs = allowedIds
