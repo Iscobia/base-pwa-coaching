@@ -13,6 +13,8 @@ try {
 */
 
 const CACHE_NAME = 'evolution-cache-v1.0.1';
+const DEFAULT_ICON = '/core/assets/icons/default-192.png';
+
 const urlsToCache = [
   '/',
   '/index.html',
@@ -39,14 +41,20 @@ self.addEventListener('install', (event) => {
         console.warn('[SW] Cache impossible:', url, e);
       }
     }
-
     await self.skipWaiting();
   })());
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activation');
-  event.waitUntil(self.clients.claim());
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter(key => key !== CACHE_NAME)
+        .map(key => caches.delete(key))
+    );
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -68,8 +76,8 @@ self.addEventListener('message', (event) => {
 
     self.registration.showNotification(notifTitle, {
       body: (description || '').substring(0, 240),
-      icon: icon || '/core/assets/icons/default-192.png',
-      badge: badge || icon || '/core/assets/icons/default-192.png',
+      icon: icon || DEFAULT_ICON,
+      badge: badge || icon || DEFAULT_ICON,
       tag: tag || `${appId || 'app'}-jour-${jour}`,
       requireInteraction: true,
       data: { jour: String(jour), url: url || self.location.origin },
