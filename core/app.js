@@ -16,6 +16,8 @@ const APP_SUPPORT_URL = APP.SUPPORT_URL || "#";
 const TECH_SUPPORT_EMAIL = window.TECH_SUPPORT_EMAIL || "";
 
 
+// ================================================
+
 console.log("APP_ID:", APP_ID);
 console.log("APP_NAME:", APP_NAME);
 console.log("DEFIS LOADED:", window.DEFIS?.length);
@@ -327,6 +329,14 @@ function applyAppBranding() {
   const supportLink = document.getElementById("support-link");
   if (supportLink) {
     supportLink.href = APP_SUPPORT_URL;
+
+    if (APP_SUPPORT_URL === "#fondation-support") {
+      supportLink.removeAttribute("target");
+      supportLink.removeAttribute("rel");
+    } else {
+      supportLink.setAttribute("target", "_blank");
+      supportLink.setAttribute("rel", "noopener noreferrer");
+    }
   }
 }
 
@@ -853,6 +863,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupTechnicalErrorCapture();
     await loadInstallAppNameFromManifest();
     debugOneSignal();
+
+    const supportLink = document.getElementById("support-link");
+    if (supportLink && APP_SUPPORT_URL === "#fondation-support") {
+      supportLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (window.FondationSupportOverlay) {
+          window.FondationSupportOverlay.open();
+        }
+      });
+    }
     
 
     //=============================================================
