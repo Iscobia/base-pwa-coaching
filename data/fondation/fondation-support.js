@@ -79,7 +79,7 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-card support-card--note support-inline-note">
               <p>
-                Choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
+                Par exemple, choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
                 avant de boire son eau (3 fois à voix haute, 3 fois à voix basse et 3 fois dans ta tête). Tu peux la
                 préparer en avance.
               </p>
@@ -158,10 +158,14 @@ window.FONDATION_SUPPORT = {
             Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu
             penses de ton entourage. </p> 
           <p> 
-            Je te donne un tableau dynamique pour lister les personnes que tu côtoies actuellement.
+            Je te donne un tableau dynamique pour lister les personnes que tu côtoies actuellement :
+            cliques sur "Ajouter une personne" pour ajouter une personne, ou "Supprimer" si tu veux supprimer l'entrée.
           </p> 
           <p>  
-            Ce tableau doit t’aider à faire le point la qualité de ton entourage : on est la moyenne des 5 personnes que l’on côtoie le plus. Si leur contact nous alourdit, alors on aura tendance à stagner ou nous éloigner de nous-même. Si au contraire elles nous apaisent ou nous offrent un contact agréable, elles ont de fortes chances de nous accepter tel.les que nous sommes ou tel.le que nous voulons devenir.
+            Ce tableau doit t’aider à faire le point la qualité de ton entourage : on est la moyenne des 5 personnes que
+            l’on côtoie le plus. Si leur contact nous alourdit, alors on aura tendance à stagner ou nous éloigner de nous-même.
+            Si au contraire elles nous apaisent ou nous offrent un contact agréable, elles ont de fortes chances de nous accepter
+            tel.les que nous sommes ou tel.le que nous voulons devenir.
           </p>
 
           <p>Prends bien le temps de penser aux qualités et défauts de chacun.</p>
