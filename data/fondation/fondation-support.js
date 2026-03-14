@@ -135,15 +135,19 @@ window.FONDATION_SUPPORT = {
           <h2>2. Effet miroir : faisons le point sur ton entourage passé et présent</h2>
 
           <p>
-            Dans les fichiers joints, tu trouveras un fichier qui s’appelle
-            <strong>« Fondements relationnels »</strong>. Imprime-le, on va faire un point ensemble.
+            Prends d’abord un petit recul sur ton parcours :
           </p>
-
-          <p>
-            Prends d’abord un petit recul sur ton parcours avec les premiers encadrés : quelles qualités et quels
-            défauts avais-tu dans ton enfance et dans ton adolescence ? Quelles sont les qualités que tu as cultivées
-            avec l’âge et les défauts que tu as transcendés ?
-          </p>
+            <div class="support-form-stack">
+              <label class="support-field">
+                <span class="support-field-label">Quelles qualités et quels défauts avais-tu dans ton enfance et dans ton adolescence ?</span>
+                <textarea class="support-textarea" rows="4" data-support-input="feelingsHome"></textarea>
+              </label>
+              <label class="support-field">
+                <span class="support-field-label">Quelles sont les qualités que tu as cultivées avec l’âge et les défauts que tu as transcendés ?</span>
+                <textarea class="support-textarea" rows="4" data-support-input="feelingsHome"></textarea>
+              </label>
+            </div>
+         
 
           <p>
             Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu penses
@@ -279,7 +283,7 @@ window.FONDATION_SUPPORT = {
       `
     },
 
-    {
+        {
       id: "qualite-relations",
       label: "4. Qualité des relations",
       shortLabel: "4. Qualité des relations",
@@ -289,18 +293,39 @@ window.FONDATION_SUPPORT = {
           <h2>4. Qualité des relations</h2>
 
           <p>
-            La qualité de tes relations est cruciale : elles peuvent te rassurer, te porter,
-            te faire plonger dans l’incompréhension et la peine, t’enchaîner, ou juste te faire stagner.
+            La qualité de tes relations est cruciale : elles peuvent te rassurer, te porter, te faire plonger dans
+            l’incompréhension et la peine, t’enchaîner, ou juste te faire stagner.
           </p>
 
           <p>
-            Les relations sont vivantes et peuvent changer d’une semaine ou d’une année à l’autre.
-            Certaines évoluent avec toi, d’autres te freinent, d’autres encore deviennent plus fécondes avec le temps.
+            Ce sont des exemples parmi d’autres, les relations sont vivantes et peuvent changer d’une semaine
+            ou d’une année à l’autre. Leur capacité d’évolution diffère selon les individus, ce qui fait que quand
+            tu évolues AVEC une personne, alors cette relation est peut-être difficile mais aussi très fructueuse.
           </p>
 
           <p>
-            Passe en revue les membres de ton entourage : les personnes avec qui tu as gardé contact,
-            celles que tu rejettes et celles qui restent présentes même sans contact régulier.
+            Que développes-tu avec chaque membre de ton entourage ? D’où viennent tes forces et tes faiblesses,
+            tes « qualités » et tes « défauts » ? Si tu sens le besoin de couper les ponts dans l’état actuel d’une
+            relation, pourquoi le ferais-tu ? Est-ce légitime et que cela t’apporterait-il ?
+          </p>
+
+          <p>
+            On est souvent surpris des portes qui s’ouvrent après des années d’absence, ou alors de celles qui
+            s’ouvrent justement quand on coupe des contacts malsains. Je te conseille de réfléchir posément
+            aux relations qui peuvent évoluer avec le temps, celles qui te portent et celles avec lesquelles tu
+            serais soulagé.e de mettre de la distance.
+          </p>
+
+          <p>
+            Non pas de couper forcément les ponts, mais savoir prendre des distances avec les personnes qui te
+            maintiennent dans une situation ou un schéma qui te dessert afin de faire de la place pour des
+            relations qui te poussent vers le haut.
+          </p>
+
+          <p>
+            Passe en revue les membres de ton entourage : les personnes avec qui tu as gardé contact, ceux que
+            tu rejettes et ceux qui sont là sans forcément avoir de contact régulier, mais présents s’il t’arrive
+            quoi que ce soit et que tu as besoin de te confier.
           </p>
 
           <div class="support-card support-card--exercise">
@@ -309,7 +334,7 @@ window.FONDATION_SUPPORT = {
               <li>Pourquoi restes-tu en contact avec cette personne ?</li>
               <li>Te sens-tu obligé.e de garder contact avec cette personne ? Pourquoi ?</li>
               <li>Que t’apporte cette personne ?</li>
-              <li>Te fait-elle subir un poids quelconque ?</li>
+              <li>Te fait-elle subir un poids quelconque ? Ce poids est-il supérieur ou inférieur à la bienveillance ou aux qualités que cette personne partage avec toi ?</li>
             </ul>
           </div>
 
@@ -317,74 +342,87 @@ window.FONDATION_SUPPORT = {
             <h3>Pour chaque personne avec qui tu es actuellement en froid :</h3>
             <ul>
               <li>Cultives-tu de la rancœur envers cette personne ?</li>
-              <li>Quelles émotions ressens-tu quand tu penses à elle ?</li>
-              <li>Quelle est ta part de responsabilité dans ce froid ?</li>
-              <li>Gagnerais-tu à rétablir la situation ou à la laisser derrière toi ?</li>
+              <li>Quelles émotions ressens-tu quand tu penses à chacune des personnes avec qui tu es en froid ? De la tristesse ? De la colère ? De la peur ? De la frustration ?</li>
+              <li>Si tu regardes avec objectivité les raisons pour lesquelles vous êtes en froid, quelle est ta part de responsabilité ?</li>
+              <li>Avant ce froid, la personne t’était-elle toxique, neutre ou bénéfique ?</li>
+              <li>Gagnerais-tu à rétablir la situation avec cette personne ou à la laisser derrière toi ?</li>
             </ul>
+          </div>
+
+          <div class="support-card support-card--note">
+            <p>
+              Dans l’exercice qui suit ce chapitre, je te donne un petit rituel à faire pour chaque membre de ton entourage
+              et chaque personne avec qui tu es en froid. Ça s’appelle les « petits bonhommes aux allumettes » :
+              un rituel simple pour t’aider à couper consciemment les liens négatifs avec les personnes que tu choisis de représenter.
+            </p>
           </div>
         </section>
       `
     },
 
-    {
+        {
       id: "bonhommes-allumettes",
-      label: "4. Exercice pratique - Les « Petits Bonhommes aux Allumettes » : couper les liens toxiques",
-      shortLabel: "4. Exercice pratique - Bonhommes",
+      label: "5. Couper les liens toxiques : l’approche ludique des « Petits Bonhommes aux Allumettes »",
+      shortLabel: "5. Bonhommes aux Allumettes",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="bonhommes-allumettes">
-          <h2>4. Exercice pratique - Les « Petits Bonhommes aux Allumettes » : couper les liens toxiques</h2>
+          <h2>5. Couper les liens toxiques : l’approche ludique des « Petits Bonhommes aux Allumettes »</h2>
 
           <p>
             Pour accompagner la décision de faire le ménage dans les liens nocifs que tu as pu vivre jusqu’à aujourd’hui,
-            je te propose un petit rituel appelé « les Bonhommes aux allumettes ».
+            je te propose un petit « rituel » qui s’appelle « les Bonhommes aux allumettes ».
+            Il y a plusieurs tutos sur le net mais je te donne ma version, qui diffère légèrement de ce que tu pourras trouver. 🙂
           </p>
 
           <p>
-            Pour chaque personne, prends un quart de feuille A4 ou une demi-feuille. Dans l’idéal, utilise un stylo ou feutre noir
-            et des couleurs violet, bleu foncé, bleu ciel, vert clair, jaune, orange, rouge et doré.
-            Sinon, tout peut être fait au stylo uni.
+            Pour chaque personne, prends un quart de feuille A4 ou une demi-feuille. Il te faudra dans l’idéal
+            un stylo ou feutre noir et des feutres ou crayons violet, bleu foncé, bleu ciel, vert clair, jaune,
+            orange, rouge et doré. Sinon, tout peut être au stylo uni, même si les couleurs permettent souvent
+            de mieux intégrer le processus.
           </p>
 
           <div class="support-bonhommes-steps">
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="./data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.webp" type="image/webp">
-                <img src="./data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.png" alt="Étape 1 des Petits Bonhommes aux Allumettes">
+                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.webp" type="image/webp">
+                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.png" alt="Étape 1 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
-                <h3>1. Dessine-toi et dessine l’autre personne</h3>
+                <h3>1. Dessine-toi et dessine la personne avec qui tu veux rompre les liens négatifs</h3>
                 <p>
                   Il ne s’agit pas de couper les ponts, juste les dépendances affectives ou les manipulations.
-                  Pas besoin d’une représentation détaillée, mais tu peux le faire si tu en ressens l’envie.
+                  Pas besoin d’une représentation détaillée, mais tu peux le faire si tu en ressens l’envie ou le besoin.
                 </p>
               </div>
             </div>
 
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="/data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.webp" type="image/webp">
-                <img src="/data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.png" alt="Étape 2 des Petits Bonhommes aux Allumettes">
+                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.webp" type="image/webp">
+                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.png" alt="Étape 2 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
                 <h3>2. Trace les liens invisibles</h3>
                 <p>
-                  Relie certaines parties clés de vos corps. Le choix de ces parties est lié à des croyances ancestrales
-                  sur la constitution énergétique du corps. Les couleurs aident, mais ne sont pas nécessaires.
+                  Trace les liens invisibles qui unissent certaines parties clés de votre corps.
+                  Le choix de ces parties est lié à des croyances ancestrales sur la constitution énergétique du corps.
+                  Les couleurs aident, mais ne sont pas nécessaires.
                 </p>
               </div>
             </div>
 
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="./bonhommes-aux-allumettes/BonhommesAllumettes3.webp" type="image/webp">
-                <img src="./bonhommes-aux-allumettes/BonhommesAllumettes3.png" alt="Étape 3 des Petits Bonhommes aux Allumettes">
+                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes3.webp" type="image/webp">
+                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes3.png" alt="Étape 3 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
-                <h3>3. Coupe les liens en conscience</h3>
+                <h3>3. Coupe ces liens en conscientisant ta volonté</h3>
                 <p>
-                  Formule intérieurement : « Je choisis de couper tout lien négatif ou aliénant avec [cette personne], ici et maintenant. »
-                  Ouvre-toi aux sensations de ton corps et observe quelles zones réagissent le plus.
+                  Répète intérieurement : « Je choisis de couper tout lien négatif ou aliénant avec [cette personne], ici et maintenant. »
+                  Ouvre-toi aux sensations de ton corps et de ton cerveau. Coupe en conscience : certaines parties de ton corps
+                  peuvent réagir plus que d’autres.
                 </p>
               </div>
             </div>
@@ -395,10 +433,14 @@ window.FONDATION_SUPPORT = {
                 <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes4.png" alt="Étape 4 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
-                <h3>4. Scelle et protège ton énergie</h3>
+                <h3>4. Scelle et protège l’énergie de chacun</h3>
                 <p>
-                  Une fois les liens coupés, entoure-toi d’un cercle doré. Tu peux faire la même chose pour l’autre personne,
-                  en lui souhaitant du bien. Cela aide à recentrer ton énergie sur toi-même et à laisser la rancune derrière toi.
+                  Une fois les liens coupés, prends soin de te sceller et de protéger ton énergie avec un cercle doré
+                  si tu as la couleur, sinon avec de petits rayons comme un soleil.
+                </p>
+                <p>
+                  Symboliquement, cela t’aide à recentrer ton énergie sur toi-même. Tu peux faire la même chose pour l’autre personne,
+                  en lui souhaitant du bien, afin d’aller vers le pardon et de laisser la rancune derrière toi.
                 </p>
               </div>
             </div>
@@ -408,11 +450,14 @@ window.FONDATION_SUPPORT = {
                 <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes5.webp" type="image/webp">
                 <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes5.png" alt="Étape 5 des Petits Bonhommes aux Allumettes">
               </picture>
-              <div class="support-card support-card--bonus">
+              <div class="support-card support-card--exercise">
                 <h3>5. Ma petite touche perso</h3>
                 <p>
                   Tu peux plier les petits papiers et les brûler dans un récipient qui ne craint pas le feu.
-                  Le feu peut aider à marquer symboliquement la transmutation de ce qui se défait en toi.
+                  Le feu peut accompagner la sensation de transformation et de relâchement.
+                </p>
+                <p>
+                  Si tu en ressens le besoin, tu peux aussi vivre ce rituel avec un appui en séance individuelle ou de groupe.
                 </p>
               </div>
             </div>
@@ -421,62 +466,108 @@ window.FONDATION_SUPPORT = {
       `
     },
 
-    {
+        {
       id: "faisons-le-point",
-      label: "5. Faisons le point",
-      shortLabel: "5. Faisons le point",
+      label: "6. Faisons le point",
+      shortLabel: "6. Faisons le point",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="faisons-le-point">
-          <h2>5. Faisons le point</h2>
-          <p>Avant de passer à la suite, prends une feuille et un crayon.</p>
+          <h2>6. Faisons le point</h2>
+
+          <p>
+            Avant de passer à la suite, j’aimerais te proposer de faire un point rapide et efficace :
+            prends une feuille et un crayon.
+          </p>
+
           <div class="support-card support-card--exercise">
             <ul>
-              <li>Sur une note de 0 à 10, comment notes-tu la compatibilité de tes activités actuelles avec tes envies réelles ?</li>
-              <li>Pourquoi manges-tu ?</li>
-              <li>Si tu ne manges pas, est-ce parce que tu te sens nourri.e d’autre chose, parce que tu refuses une situation, ou parce qu’une émotion te noue le ventre ?</li>
-              <li>À quelle fréquence trouves-tu un contact avec la Terre ?</li>
+              <li><strong>Sur une note de 0 à 10</strong>, comment notes-tu la compatibilité de tes activités actuelles avec tes envies réelles ? Si tu n’es pas à 10, que devrais-tu changer ?</li>
+              <li><strong>Pourquoi manges-tu ?</strong>
+                <ul>
+                  <li>parce que tu as faim ?</li>
+                  <li>pour combler un émotionnel instable ?</li>
+                  <li>par habitude ?</li>
+                  <li>pour compenser l’insécurité provoquée par un environnement qui n’est pas propice à ton expansion ?</li>
+                </ul>
+              </li>
+              <li><strong>Si tu ne manges pas, est-ce parce que :</strong>
+                <ul>
+                  <li>tu te sens nourri.e d’autre chose ?</li>
+                  <li>tu ne veux pas accepter une situation ?</li>
+                  <li>une émotion ou une sensation physique te noue le ventre ?</li>
+                  <li>ton corps te dit qu’il en a besoin ?</li>
+                </ul>
+              </li>
+              <li><strong>À quelle fréquence</strong> trouves-tu un contact avec la Terre ?</li>
             </ul>
           </div>
+
           <p>
             Si tu es honnête avec toi-même, tu sens ce qui te porte ou non. Si quelque chose ne te porte pas,
-            c’est souvent que tu le fais par automatisme, avec la patte qui traîne ou carrément en forcing.
+            c’est que tu le fais soit par automatisme, soit avec la patte qui traîne, soit carrément en forcing.
+            Et là, c’est l’alarme qui sonne.
           </p>
+
+          <p>
+            Plus tu forces sans voir le bout, plus tu t’épuises. Si tu gères mal ton énergie, tu perds ton temps
+            et aussi ce qui te fait vivre.
+          </p>
+
+          <p>
+            Pose-toi avec toi-même : qu’aimes-tu vraiment vivre ou faire ? As-tu besoin d’être plus entouré.e
+            ou d’avoir plus de temps seul.e ? Quels types de personnes aimerais-tu à tes côtés ?
+          </p>
+
+          <div class="support-card support-card--note">
+            <p>
+              Il faut surtout que tu trouves une façon de sécuriser un lieu de ressourcement, pouvoir parler
+              à quelqu’un d’ouvert, fiable et constructif quand tu en as besoin, et t’entourer de personnes
+              qui comprennent tes projets de vie.
+            </p>
+          </div>
         </section>
       `
     },
 
-    {
+        {
       id: "travaille-ton-mindset",
-      label: "6. Travaille ton mindset",
-      shortLabel: "6. Travaille ton mindset",
+      label: "7. Travaille ton mindset",
+      shortLabel: "7. Travaille ton mindset",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="travaille-ton-mindset">
-          <h2>6. Travaille ton mindset</h2>
+          <h2>7. Travaille ton mindset</h2>
+
           <p>
             Il est naturel de chercher l’approbation des autres, d’attendre qu’ils reconnaissent notre valeur
             et s’intéressent à ce que nous faisons. Mais derrière ce besoin de validation, il y a souvent
             un manque de confiance en soi.
           </p>
+
+          <p>
+            En réalité, ce que nous cherchons, ce n’est pas seulement l’approbation des autres,
+            mais surtout du soutien, parce que nous ne nous sentons pas encore capables de nous porter seuls.
+          </p>
+
           <p>
             Le travail le plus puissant que j’ai eu à faire sur moi, c’est justement celui de la confiance en soi.
-            Une vraie confiance, celle qui ne dépend ni du regard des inconnus, ni de l’opinion des proches.
+            Une vraie confiance, celle qui ne dépend ni du regard des inconnus, ni de l’opinion de nos proches,
+            même pas de la personne qui partage notre vie.
           </p>
+
+          <p>
+            Quand tu développes cette force intérieure, tu es capable d’assumer pleinement tes pensées,
+            tes paroles et tes actions, sans crainte du jugement extérieur.
+          </p>
+
           <p>
             Et comme toute force, la confiance se travaille. C’est un véritable programme de musculation intérieure.
+            Plus tu l’entraînes, plus elle devient solide et naturelle.
           </p>
-        </section>
-      `
-    },
 
-    {
-      id: "voix-interieure",
-      label: "Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps",
-      shortLabel: "Voix intérieure et mots",
-      trackCompletion: true,
-      html: `
-        <section class="support-section" data-section-id="voix-interieure">
+          <p>Je vais te proposer quelques outils pour aller dans ce sens.</p>
+       
           <h2>Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps</h2>
           <p>
             Lorsque nous parlons — à voix haute ou intérieurement — ce ne sont pas de simples syllabes qui se forment :
@@ -497,8 +588,8 @@ window.FONDATION_SUPPORT = {
 
     {
       id: "confiance",
-      label: "Exercice Pratique - Explore et reprogramme consciemment tes réactions corporelles et émotionnelles au mot « confiance »",
-      shortLabel: "Exercice Pratique - Confiance",
+      label: "a) Explore et reprogramme consciemment tes réactions corporelles et émotionnelles au mot « confiance »",
+      shortLabel: "a) Exercice Simple - Confiance",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="confiance">
@@ -509,15 +600,16 @@ window.FONDATION_SUPPORT = {
           </p>
           <div class="support-card support-card--exercise">
             <ul>
-              <li><strong>À voix haute :</strong> dis-le clairement trois fois.</li>
-              <li><strong>À voix basse :</strong> murmure-le trois fois.</li>
-              <li><strong>Dans ta tête :</strong> répète-le maintenant en silence.</li>
+              <li><strong>À voix haute :</strong> dis-le clairement trois fois. En Kundalini Yoga, on dit que cela agit sur le conscient, te permettant d’affirmer et d’ancrer cette idée dans la réalité. La science moderne confirme que parler à voix haute renforce la mémoire et impacte positivement ta perception de toi-même.</li>
+              <li><strong>À voix basse :</strong> murmure-le trois fois. Murmure le mot « Confiance » trois fois. Cette étape touche l’inconscient, comme un message subtil que tu envoies à ton monde intérieur. La psychologie montre que le langage intérieur influence nos croyances profondes et aide à reprogrammer nos schémas mentaux.</li>
+              <li><strong>Dans ta tête :</strong> répète maintenant ce mot en silence. Dans la tradition yogique, cette pratique est reliée à l’âme, une manière de vibrer intérieurement avec cette intention. D’un point de vue neuroscientifique, les recherches sur la méditation montrent que la répétition mentale calme le système nerveux et améliore la clarté mentale (à condition que la répétition soit positive, bien sûr).</li>
             </ul>
           </div>
           <p>
-            À chaque étape, observe ce qui se passe en toi : sensations physiques, pensées, émotions,
-            tensions ou détente.
+            À chaque étape, observe ce qui se passe en toi : tes sensations physiques, tes pensées, tes émotions. Peut-être qu’un doute surgit, une tension se manifeste, ou au contraire, une détente s’installe. Écoute simplement ton intérieur.
           </p>
+          <p>Cet exercice ne sert pas seulement à renforcer ta confiance en toi, mais aussi à cultiver la confiance dans la vie. Il t’aide à lâcher le contrôle sans perdre pied, à rester ancré.e tout en étant réceptif.ve aux solutions qui t’entourent.</p>
+         <p>C’est simple mais puissant ! Laisse-toi guider par cette répétition et ressens comment elle transforme ton état intérieur.</p>
         </section>
       `
     },
@@ -525,18 +617,16 @@ window.FONDATION_SUPPORT = {
     {
       id: "effet-miroir-allie",
       label: "b) Utilise l’effet miroir comme un allié",
-      shortLabel: "b) Effet miroir allié",
+      shortLabel: "b) Utilise l’effet miroir comme un allié",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="effet-miroir-allie">
           <h2>b) Utilise l’effet miroir comme un allié</h2>
           <p>
-            Lorsque tu observes de la réticence ou du désintérêt dans ton entourage pour ce qui te porte,
-            demande-toi ce que tu cherches en eux. Écoute tes tripes avant ton mental.
+            Lorsque tu observes ou que tu as <u>l’impression d’observer</u> de la réticence ou du désintérêt dans ton entourage pour ce qui te porte, demande-toi ce que tu cherches en eux. Sans forcément solliciter ton mental, écoute tes tripes. Quelles émotions ou quelles images te viennent ? Imagine que tu <strong>demandes ce soutien et cette validation à toi-même</strong> : tu es la personne qui sera le plus à tes côtés dans cette vie, tu dois pouvoir t’appuyer sur toi-même.
           </p>
           <p>
-            Imagine que tu demandes ce soutien et cette validation à toi-même : tu es la personne
-            qui sera le plus à tes côtés dans cette vie.
+            C’est difficile au début, c’est normal. C’est un peu comme si tu essayais de tenir en équilibre la tête en bas à la seule force de tes bras (alors que tu n’as pas du tout la musculature pour!). C’est pas parce que tu te casses la figure au début et que ça a l’air infaisable que ça n’est pas réalisable. Je sais que tu peux le faire ! Je suis passée par là aussi, tu sais.
           </p>
         </section>
       `
