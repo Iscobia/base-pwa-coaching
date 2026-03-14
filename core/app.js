@@ -51,25 +51,88 @@ function lsRemove(key) {
 
 // ============== FONCTION PAUSE ==================//
 
-function isProgressPaused() {
+function isManualProgressPaused() {
   return lsGet('progress_paused', 'false') === 'true';
 }
 
-function setProgressPaused(value) {
+function setManualProgressPaused(value) {
   lsSet('progress_paused', value ? 'true' : 'false');
 }
+
+function isFlowOverrideActive() {
+  return lsGet('flow_pause_override', 'false') === 'true';
+}
+
+function setFlowOverrideActive(value) {
+  lsSet('flow_pause_override', value ? 'true' : 'false');
+}
+
+function getFlowBlockerAppId() {
+  const flow = getProgramFlow();
+  if (!flow.length) return null;
+
+  for (const appId of flow) {
+    if (!isProgramCompleted(appId)) {
+      return appId;
+    }
+  }
+
+  return null;
+}
+
+function isFlowAutoPausedForApp(appId = APP_ID) {
+  const flow = getProgramFlow();
+  if (!flow.length || !flow.includes(appId)) return false;
+
+  const blockerAppId = getFlowBlockerAppId();
+  if (!blockerAppId) return false;
+
+  if (blockerAppId === appId) return false;
+
+  if (isFlowOverrideActive()) return false;
+
+  return true;
+}
+
+function isProgressPaused() {
+  return isManualProgressPaused() || isFlowAutoPausedForApp(APP_ID);
+}
+
+function setProgressPaused(value) {
+  setManualProgressPaused(value);
+  if (value) {
+    setFlowOverrideActive(false);
+  }
+}
+
 
 function updatePauseProgressionButton() {
   const btn = document.getElementById('pause-progression-btn');
   if (!btn) return;
 
-  if (isProgressPaused()) {
+  const manuallyPaused = isManualProgressPaused();
+  const autoPaused = isFlowAutoPausedForApp(APP_ID);
+
+  if (manuallyPaused) {
     btn.textContent = `▶️ Relancer ma progression dans ${APP_NAME}`;
     btn.classList.add('is-paused');
-  } else {
-    btn.textContent = `⏸️ Mettre ma progression dans ${APP_NAME} en pause`;
-    btn.classList.remove('is-paused');
+    btn.title = '';
+    return;
   }
+
+  if (autoPaused) {
+    const blockerAppId = getFlowBlockerAppId();
+    const blockerName = window.APP_CONFIGS?.[blockerAppId]?.NAME || blockerAppId || 'le programme précédent';
+
+    btn.textContent = `▶️ Relancer ma progression dans ${APP_NAME}`;
+    btn.classList.add('is-paused');
+    btn.title = `En pause automatiquement tant que ${blockerName} n'est pas terminé.`;
+    return;
+  }
+
+  btn.textContent = `⏸️ Mettre ma progression dans ${APP_NAME} en pause`;
+  btn.classList.remove('is-paused');
+  btn.title = '';
 }
 
 // ============== FIN de la FONCTION PAUSE ==================//
@@ -231,6 +294,19 @@ function getProgramFlow() {
 }
 
 function isProgramCompleted(appId) {
+  const savedRaw = localStorage.getItem(`${appId}_defis_progression`);
+
+  if (savedRaw && savedRaw !== 'undefined' && savedRaw !== 'null') {
+    try {
+      const saved = JSON.parse(savedRaw);
+      if (Array.isArray(saved) && saved.length > 0) {
+        return saved.every(defi => defi.termine === true);
+      }
+    } catch (e) {
+      console.warn(`⚠️ Progression invalide ignorée pour ${appId}`, e);
+    }
+  }
+
   const defis = window.DEFIS_BY_APP?.[appId];
   if (!Array.isArray(defis) || defis.length === 0) return false;
 
@@ -961,55 +1037,62 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         pauseProgressionButton.addEventListener('click', function () {
 
-          const currentlyPaused = isProgressPaused();
-          const newPausedState = !currentlyPaused;
+        const manuallyPaused = isManualProgressPaused();
+        const autoPaused = isFlowAutoPausedForApp(APP_ID);
+        const effectivelyPaused = manuallyPaused || autoPaused;
 
-          // Si on passe en pause
-          if (!currentlyPaused && newPausedState) {
+        // Si on met manuellement en pause
+        if (!effectivelyPaused) {
+          const jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
 
-            const jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
+          let wasCompleted = false;
 
-            let wasCompleted = false;
-
-            if (window.DEFIS && window.DEFIS[jourActuel - 1]) {
-              wasCompleted = window.DEFIS[jourActuel - 1].termine === true;
-            }
-
-            lsSet('pause_day_was_completed', wasCompleted ? 'true' : 'false');
+          if (window.DEFIS && window.DEFIS[jourActuel - 1]) {
+            wasCompleted = window.DEFIS[jourActuel - 1].termine === true;
           }
 
-          setProgressPaused(newPausedState);
-
-
-          // Si on relance la progression
-          if (currentlyPaused && !newPausedState) {
-
-            const wasCompleted = lsGet('pause_day_was_completed', 'false') === 'true';
-
-            if (wasCompleted) {
-
-              let jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
-
-              if (window.DEFIS && jourActuel < window.DEFIS.length) {
-                jourActuel = jourActuel + 1;
-                lsSet('jour_actuel', String(jourActuel));
-              }
-            }
-
-            // On efface la mémoire de pause
-            lsRemove('pause_day_was_completed');
-          }
-
+          lsSet('pause_day_was_completed', wasCompleted ? 'true' : 'false');
+          setProgressPaused(true);
+          setFlowOverrideActive(false);
 
           updatePauseProgressionButton();
-
-          alert(
-            newPausedState
-              ? `⏸️ La progression ${APP_NAME} est maintenant en pause.`
-              : `▶️ La progression ${APP_NAME} reprend à partir d’aujourd’hui.`
-          );
+          alert(`⏸️ La progression ${APP_NAME} est maintenant en pause.`);
           window.location.reload();
-        });
+          return;
+        }
+
+        // Si on relance après pause manuelle
+        if (manuallyPaused) {
+          setManualProgressPaused(false);
+
+          const wasCompleted = lsGet('pause_day_was_completed', 'false') === 'true';
+
+          if (wasCompleted) {
+            let jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
+
+            if (window.DEFIS && jourActuel < window.DEFIS.length) {
+              jourActuel = jourActuel + 1;
+              lsSet('jour_actuel', String(jourActuel));
+            }
+          }
+
+          lsRemove('pause_day_was_completed');
+
+          updatePauseProgressionButton();
+          alert(`▶️ La progression ${APP_NAME} reprend à partir d’aujourd’hui.`);
+          window.location.reload();
+          return;
+        }
+
+        // Si on relance malgré une pause automatique du flow
+        if (autoPaused) {
+          setFlowOverrideActive(true);
+
+          updatePauseProgressionButton();
+          alert(`▶️ La progression ${APP_NAME} reprend malgré l’ordre recommandé du parcours.`);
+          window.location.reload();
+        }
+      });
       }
 
 
@@ -1730,6 +1813,7 @@ function setNoteForDay(day, text) {
         lsRemove('notes');
         lsRemove('install_prompt_shown');
         lsSet('progress_paused', wasPaused ? 'true' : 'false');
+        lsRemove('flow_pause_override');
 
         alert(`🗑️ Progression ${APP_NAME} supprimée.`);
         window.location.reload();
