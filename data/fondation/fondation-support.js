@@ -79,7 +79,7 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-card support-card--note support-inline-note">
               <p>
-                Par exemple, choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
+                Exemple: choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
                 avant de boire son eau (3 fois à voix haute, 3 fois à voix basse et 3 fois dans ta tête). Tu peux la
                 préparer en avance.
               </p>
@@ -726,7 +726,7 @@ window.FONDATION_SUPPORT = {
 
           <p>Je vais te proposer quelques outils pour aller dans ce sens.</p>
 
-          <h2>Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps</h2>
+          <h2 style="margin-top:50px">Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps</h2>
 
           <p>
             Lorsque nous parlons - à voix haute ou intérieurement - ce ne sont pas de simples syllabes qui
