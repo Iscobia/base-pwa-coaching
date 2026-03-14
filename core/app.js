@@ -557,8 +557,30 @@ function getDefiByDayForApp(appId, jourNumero) {
   return defis.find(defi => defi.jour === jourNumero) || null;
 }
 
-function isProgressPausedForApp(appId) {
+function isManualProgressPausedForApp(appId) {
   return appLsGet(appId, 'progress_paused', 'false') === 'true';
+}
+
+function isFlowOverrideActiveForApp(appId) {
+  return appLsGet(appId, 'flow_pause_override', 'false') === 'true';
+}
+
+function isFlowAutoPausedForAppId(appId) {
+  const flow = getProgramFlow();
+  if (!flow.length || !flow.includes(appId)) return false;
+
+  const blockerAppId = getFlowBlockerAppId();
+  if (!blockerAppId) return false;
+
+  if (blockerAppId === appId) return false;
+
+  if (isFlowOverrideActiveForApp(appId)) return false;
+
+  return true;
+}
+
+function isProgressPausedForApp(appId) {
+  return isManualProgressPausedForApp(appId) || isFlowAutoPausedForAppId(appId);
 }
 
 
@@ -606,7 +628,8 @@ async function showDailyWakeNotificationIfNeededForApp(appId) {
     const icon192 = appConfig.ICON_192 || './core/assets/icons/default-192.png';
     const targetUrl = buildNotificationTargetUrl(appId);
 
-    const reg = await navigator.serviceWorker?.getRegistration?.();
+    const reg = ('serviceWorker' in navigator) ? await navigator.serviceWorker.ready.catch(() => null) : null;
+
     if (reg?.showNotification) {
       await reg.showNotification(notifTitle, {
         body: notifBody,
@@ -620,11 +643,9 @@ async function showDailyWakeNotificationIfNeededForApp(appId) {
         }
       });
     } else {
-      new Notification(notifTitle, {
-        body: notifBody,
-        icon: icon192,
-        tag: `${appId}-jour-${jourActuel}`
-      });
+      console.warn(`⚠️ SW non prêt pour ${appId}, notif wake ignorée pour éviter une notif Chrome`);
+      appLsRemove(appId, lockKey);
+      return false;
     }
 
     appLsSet(appId, lastShownKey, today);
