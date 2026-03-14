@@ -78,7 +78,7 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-card support-card--note support-inline-note">
               <p>
-                <strong>Rappel :</strong> tu peux choisir une bouteille en verre à laquelle tu répéteras 9 fois ton mantra
+                <strong>Exemple :</strong> tu peux choisir une bouteille en verre à laquelle tu répéteras 9 fois ton mantra
                 au moins 10 minutes avant de boire son eau : 3 fois à voix haute, 3 fois à voix basse
                 et 3 fois dans ta tête.
               </p>
@@ -349,8 +349,8 @@ window.FONDATION_SUPPORT = {
           <div class="support-bonhommes-steps">
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.webp" type="image/webp">
-                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.png" alt="Étape 1 des Petits Bonhommes aux Allumettes">
+                <source srcset="./data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.webp" type="image/webp">
+                <img src="./data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes1.png" alt="Étape 1 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
                 <h3>1. Dessine-toi et dessine l’autre personne</h3>
@@ -363,8 +363,8 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.webp" type="image/webp">
-                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.png" alt="Étape 2 des Petits Bonhommes aux Allumettes">
+                <source srcset="/data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.webp" type="image/webp">
+                <img src="/data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes2.png" alt="Étape 2 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
                 <h3>2. Trace les liens invisibles</h3>
@@ -377,8 +377,8 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-bonhommes-step">
               <picture class="support-bonhommes-media">
-                <source srcset="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes3.webp" type="image/webp">
-                <img src="data/fondation/bonhommes-aux-allumettes/BonhommesAllumettes3.png" alt="Étape 3 des Petits Bonhommes aux Allumettes">
+                <source srcset="./bonhommes-aux-allumettes/BonhommesAllumettes3.webp" type="image/webp">
+                <img src="./bonhommes-aux-allumettes/BonhommesAllumettes3.png" alt="Étape 3 des Petits Bonhommes aux Allumettes">
               </picture>
               <div class="support-card support-card--exercise">
                 <h3>3. Coupe les liens en conscience</h3>

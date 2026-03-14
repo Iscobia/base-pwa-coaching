@@ -116,7 +116,7 @@ reset: {
     MAIN_TITLE: "Reviens à toi, un pas à la fois.",
     BROWSER_TITLE: "RESET - Défi Quotidien",
     TOTAL_DAYS: 25,
-    SUPPORT_URL: NaN
+    SUPPORT_URL: "https://calendly.com/sekhamet/30min?back=1&month=2026-03"
   },
   fondation: {
     ID: "fondation",
