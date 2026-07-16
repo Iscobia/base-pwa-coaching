@@ -15,8 +15,8 @@
 
   /* États fonctionnels */
   --couleur-valide: linear-gradient(160deg, #10b981 0%, #059669 100%);
-  --couleur-valide-foncee: #215f42;
-  --couleur-valide-claire: #dcefe5;
+  --couleur-valide-foncee: #059669;
+  --couleur-valide-claire: #10b981;
 
   --couleur-manque: #ef4444;
   --couleur-manque-foncee: #7f2f2d;
