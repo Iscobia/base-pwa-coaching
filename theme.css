@@ -104,4 +104,5 @@ html[data-skin="basalte"] {
   --bordure: rgba(239, 229, 213, 0.24);
   --bordure-douce: rgba(239, 229, 213, 0.13);
   --ombre-app: 0 24px 70px rgba(0, 0, 0, 0.48);
+  --couleur-action: #c9b28f;
 }
