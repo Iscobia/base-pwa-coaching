@@ -1,14 +1,6 @@
 /* style.css - Styles de base */
 /* ========== POLICES PERSONNALISÉES ========== */
 
-/* On importe les styles thématique des theme.css */
-:root {
-  --app-bg: linear-gradient(160deg, #0b252f 0%, #0e303d 100%);
-  --primary-gradient: linear-gradient(160deg, #0b252f 0%, #0e303d 100%);
-  --secundary-gradient: linear-gradient(160deg, #0e303d 0%, #014055 100%);
-  --primary-text: #0b252f;
-}
-
 /* =========================================== */
 
 @font-face {
@@ -28,20 +20,24 @@
 }
 
 /* ========== APPLICATION DES POLICES ========== */
-body {
-  font-family: 'Lora', -apple-system, BlinkMacSystemFont, 'Segoe UI';
-  /* ... reste inchangé ... */
+/* Hiérarchie typographique */
+h1,
+h2,
+.app-header h1,
+#challenge-title {
+  font-family: var(--font-titre);
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
-/* Titres avec la police Cinzel */
-.app-header h1,
-#challenge-title,
+h3,
 .calendar-section h3,
 .notifications-settings h3,
-.troubleshooting h3 {
-  font-family: 'Cinzel', serif;
-  font-weight: normal;
-  letter-spacing: 0.5px; /* Optionnel pour meilleure lisibilité */
+.troubleshooting h3,
+.notes-head h3 {
+  font-family: var(--font-texte);
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 /* ========= BOUTON PAUSE ========= */
@@ -79,9 +75,8 @@ body {
 
 /* Boutons et texte technique gardent une police sans-serif */
 .validate-btn, .secondary-btn, .warning-btn, .backup-btn, .danger-btn,
-.time-selector select, .small-note {
-  font-family: "Cinzel", -apple-system, BlinkMacSystemFont, 'Segoe UI';
-  letter-spacing: 0.5px;
+.time-selector select, .small-note, button, input, textarea, select {
+  font-family: var(--font-texte);
 }
 
 /* Bouton ON/OFF amélioré */
@@ -94,7 +89,7 @@ body {
 
 .backup-btn.toggle-on {
   background-color: #10b981 !important;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  background: linear-gradient(135deg, var(--programme-enveloppe-debut), var(--programme-enveloppe-fin)) !important;
   color: white;
   border: 2px solid #10b981;
 }
@@ -124,20 +119,29 @@ body {
 }
 
 body {
-  font-family: "Lora", -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--app-bg);
+  font-family: var(--font-texte);
+  background-color: #17191a;
+  background-image: var(--background-img);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   min-height: 100vh;
   padding: 20px;
-  color: #333;
+  color: var(--texte-principal);
+  transition: background-image 0.25s ease, color 0.25s ease;
 }
 
 .app-container {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
-  border-radius: 20px;
+  background: var(--app-surface);
+  color: var(--texte-principal);
+  border: 1px solid var(--bordure-douce);
+  border-radius: 8px;
   padding: 25px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  box-shadow: var(--ombre-app);
+  backdrop-filter: blur(8px);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ========== HEADER AVEC IMAGE ========== */
@@ -529,37 +533,6 @@ button.madeup {
   }
 
 
-/* STYLE EN DOUBLON DANS APP.JS : du bouton d'installation sur l'écran d'accueil*/
-
-.install-btn { 
-/*  display: none;
-  width: calc(100% - 40px);
-  max-width: 400px;
-  margin: 20px auto 50px auto; /* marge de 20px en haut, 50px en bas et automatique sur les côtés pour centrage*/
-/*  background: linear-gradient(160deg, #f29a0b 0%, #ed5d0e 100%);
-  color: white;
-  border: none;
-  padding: 16px 24px;
-  border-radius: 12px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(11, 37, 47, 0.03);
-  transition: transform 0.2s, box-shadow 0.2s;*/ 
-} 
-
-.install-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(11, 37, 47, 0.03);
-  background: linear-gradient(135deg, #f29a0b 0%, #ed5d0e 100%);
-}
-
-.install-btn:active {
-  transform: translateY(0);
-}
-
-
 /*style de la section de dépannage*/
 
 /* Section dépannage */
@@ -719,7 +692,7 @@ backup-p {margin: 30px 0 2px 0px;}
 }
 
 .network-banner.online {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--programme-enveloppe-debut), var(--programme-enveloppe-fin));
   color: white;
 }
 
@@ -731,7 +704,7 @@ backup-p {margin: 30px 0 2px 0px;}
 
 
 .browser-warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, var(--programme-emergence-debut), var(--programme-emergence-fin));
   color: white;
   padding: 12px 15px;
   border-radius: 8px;
@@ -892,33 +865,33 @@ backup-p {margin: 30px 0 2px 0px;}
 }
 
 .program-chip.theme-fondation.is-active {
-  background: linear-gradient(160deg, #9c4fc2 0%, #5b2b73 100%);
+  background: linear-gradient(160deg, var(--programme-fondation-debut), var(--programme-fondation-fin));
   border-color: #5b2b73;
 }
 
 .program-chip.theme-envol.is-active {
-  background: linear-gradient(160deg, #0b252f 0%, #0e303d 100%);
+  background: linear-gradient(160deg, var(--programme-envol-debut), var(--programme-envol-fin));
   border-color: #0b252f;
 }
 
 
 .program-chip.theme-origine.is-active {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(135deg, var(--programme-origine-debut), var(--programme-origine-fin));
   border-color: #b91c1c;
 }
 
 .program-chip.theme-enveloppe.is-active {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--programme-enveloppe-debut), var(--programme-enveloppe-fin));
   border-color: #047857;
 }
 
 .program-chip.theme-emergence.is-active {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, var(--programme-emergence-debut), var(--programme-emergence-fin));
   border-color: #b45309;
 }
 
 .program-chip.theme-reset.is-active {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--programme-enveloppe-debut), var(--programme-enveloppe-fin));
   border-color: #047857;
 }
 
@@ -1012,4 +985,257 @@ backup-p {margin: 30px 0 2px 0px;}
   cursor: pointer;
   font: inherit;
   padding: 0;
+}
+
+/* =========================================================
+   COUCHE D'IDENTITÉ VISUELLE STABILISÉE
+   ========================================================= */
+
+body,
+p,
+li,
+label,
+small,
+textarea,
+input,
+select,
+button,
+a {
+  font-family: var(--font-texte);
+}
+
+h1,
+h2,
+.program-chip-name {
+  font-family: var(--font-titre);
+}
+
+h3,
+.program-chip-subtitle {
+  font-family: var(--font-texte);
+}
+
+.app-header,
+.app-footer {
+  border-color: var(--bordure-douce);
+}
+
+.app-header h1,
+#challenge-title,
+.calendar-section h3,
+.notes-head h3 {
+  color: var(--titre-principal);
+}
+
+.challenge-container {
+  background: var(--surface-challenge);
+  border-color: var(--bordure);
+  border-radius: var(--radius-net);
+}
+
+.calendar-grid,
+.notes-box,
+.notes-textarea,
+.notes-clear-btn,
+.program-chip.is-inactive {
+  background: var(--surface-douce);
+  color: var(--texte-principal);
+  border-color: var(--bordure);
+}
+
+.calendar-day,
+.program-chip,
+#install-pwa-btn,
+.warning-btn,
+.backup-warning-note,
+.trouble-item.warning,
+.danger-btn {
+  border-radius: var(--radius-net);
+}
+
+.calendar-day.completed {
+  background: var(--couleur-valide);
+}
+
+.calendar-day.current,
+.calendar-day.madeup,
+button.madeup,
+#mark-done-btn.mark-madeup {
+  background: var(--couleur-rattrapage) !important;
+}
+
+.calendar-day.missed,
+#mark-done-btn.mark-rattraper {
+  background: var(--couleur-manque) !important;
+}
+
+#mark-done-btn.mark-done {
+  background: var(--couleur-valide) !important;
+}
+
+.validate-btn {
+  background: linear-gradient(160deg, var(--couleur-valide), var(--couleur-valide-foncee));
+}
+
+.validate-btn.completed {
+  background: var(--couleur-valide-claire);
+  color: var(--couleur-valide-foncee);
+}
+
+.program-chip {
+  color: var(--texte-principal);
+  background: var(--surface-douce);
+}
+
+.program-chip.is-inactive {
+  color: var(--texte-principal);
+}
+
+.program-chip.theme-fondation.is-active {
+  background: linear-gradient(160deg, var(--programme-fondation-debut), var(--programme-fondation-fin));
+  border-color: var(--programme-fondation-fin);
+}
+
+.program-chip.theme-envol.is-active {
+  background: linear-gradient(160deg, var(--programme-envol-debut), var(--programme-envol-fin));
+  border-color: var(--programme-envol-fin);
+}
+
+.program-chip.theme-origine.is-active {
+  background: linear-gradient(160deg, var(--programme-origine-debut), var(--programme-origine-fin));
+  border-color: var(--programme-origine-fin);
+}
+
+.program-chip.theme-enveloppe.is-active {
+  background: linear-gradient(160deg, var(--programme-enveloppe-debut), var(--programme-enveloppe-fin));
+  border-color: var(--programme-enveloppe-fin);
+}
+
+.program-chip.theme-emergence.is-active {
+  background: linear-gradient(160deg, var(--programme-emergence-debut), var(--programme-emergence-fin));
+  border-color: var(--programme-emergence-fin);
+}
+
+.program-chip.theme-reset.is-active {
+  background: linear-gradient(160deg, var(--programme-reset-debut), var(--programme-reset-fin));
+  border-color: var(--programme-reset-fin);
+}
+
+.troubleshooting {
+  background: var(--surface-technique);
+  border-color: var(--couleur-attention-claire);
+  border-radius: 6px;
+}
+
+.troubleshooting h3,
+.trouble-item p {
+  color: var(--texte-principal);
+}
+
+.warning-btn {
+  background: linear-gradient(160deg, var(--couleur-attention), var(--couleur-attention-foncee));
+}
+
+.trouble-item.warning {
+  background: var(--couleur-danger-claire);
+  border-color: var(--couleur-danger);
+}
+
+.danger-btn {
+  background: linear-gradient(160deg, var(--couleur-danger), var(--couleur-danger-foncee));
+}
+
+.backup-warning-note {
+  background: var(--couleur-attention-claire);
+  border-color: var(--couleur-attention);
+  color: var(--couleur-attention-foncee);
+}
+
+html[data-skin="basalte"] .trouble-item.warning,
+html[data-skin="basalte"] .backup-warning-note {
+  color: var(--texte-principal);
+}
+
+#install-pwa-btn.install-btn {
+  display: none;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  margin: 20px auto 50px;
+  padding: 16px 24px;
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: var(--radius-net);
+  background: linear-gradient(160deg, var(--installation-debut), var(--installation-fin));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(11, 37, 47, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#install-pwa-btn.install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(11, 37, 47, 0.34);
+}
+
+.skin-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.skin-switcher-label {
+  color: var(--texte-secondaire);
+  font-size: 0.86rem;
+}
+
+.skin-switcher-actions {
+  display: inline-flex;
+  border: 1px solid var(--bordure);
+  border-radius: var(--radius-net);
+  overflow: hidden;
+  background: var(--surface-douce);
+}
+
+.skin-choice {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--bordure);
+  border-radius: 0;
+  padding: 8px 11px;
+  background: transparent;
+  color: var(--texte-principal);
+  cursor: pointer;
+  font-size: 0.84rem;
+}
+
+.skin-choice:last-child {
+  border-right: 0;
+}
+
+.skin-choice.is-active {
+  background: var(--titre-principal);
+  color: var(--surface-pleine);
+}
+
+html[data-skin="basalte"] .skin-choice.is-active {
+  color: #252829;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 0;
+  }
+
+  .app-container {
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .skin-switcher {
+    justify-content: center;
+  }
 }

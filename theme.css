@@ -1,8 +1,100 @@
-// theme.css
+/* =========================================================
+   IDENTITÉ VISUELLE & SKINS
+   Modifie ici les couleurs globales de l'application.
+   ========================================================= */
 
 :root {
-  --background-img: url('./assets/pictures/BG_Basalte.webp');
-  --primary-gradient: linear-gradient(160deg, #0b252f 0%, #0e303d 100%);
-  --secundary-gradient: linear-gradient(160deg, #0e303d 0%, #014055 100%);
-  --primary-text: #0b252f;
+  /* Polices */
+  --font-titre: "Cinzel", Georgia, serif;
+  --font-texte: "Lora", Georgia, serif;
+
+  /* Rayons */
+  --radius-net: 4px;
+  --radius-standard: 10px;
+  --radius-pill: 999px;
+
+  /* États fonctionnels */
+  --couleur-valide: #2f7d57;
+  --couleur-valide-foncee: #215f42;
+  --couleur-valide-claire: #dcefe5;
+
+  --couleur-manque: #a94442;
+  --couleur-manque-foncee: #7f2f2d;
+  --couleur-manque-claire: #f4dddd;
+
+  --couleur-rattrapage: #c59a24;
+  --couleur-rattrapage-foncee: #8e6a10;
+  --couleur-rattrapage-claire: #f4e8bd;
+
+  --couleur-danger: #9f3030;
+  --couleur-danger-foncee: #702020;
+  --couleur-danger-claire: #f3dada;
+
+  --couleur-attention: #b86f2b;
+  --couleur-attention-foncee: #824919;
+  --couleur-attention-claire: #f6e3d2;
+
+  --couleur-info: #365f7a;
+  --couleur-info-foncee: #27485d;
+  --couleur-info-claire: #dce8ef;
+
+  /* Programmes */
+  --programme-fondation-debut: #8e5aa8;
+  --programme-fondation-fin: #563565;
+  --programme-envol-debut: #223d45;
+  --programme-envol-fin: #152c34;
+  --programme-origine-debut: #b34d45;
+  --programme-origine-fin: #873832;
+  --programme-enveloppe-debut: #4f8068;
+  --programme-enveloppe-fin: #37604c;
+  --programme-emergence-debut: #bd8730;
+  --programme-emergence-fin: #8f6220;
+  --programme-reset-debut: #4f8068;
+  --programme-reset-fin: #37604c;
+
+  /* Actions */
+  --action-principale-debut: #294b55;
+  --action-principale-fin: #18343d;
+  --action-secondaire-debut: #385b65;
+  --action-secondaire-fin: #24454f;
+  --installation-debut: #b98032;
+  --installation-fin: #8f5c1f;
+
+  /* Skin clair : Marbre */
+  --background-img: url("./assets/pictures/BG_Marbre.webp");
+  --app-surface: rgba(255, 255, 255, 0.90);
+  --surface-pleine: #ffffff;
+  --surface-douce: rgba(255, 255, 255, 0.72);
+  --surface-challenge: rgba(250, 249, 247, 0.86);
+  --surface-technique: rgba(255, 248, 239, 0.88);
+  --texte-principal: #2c2926;
+  --texte-secondaire: #625d56;
+  --titre-principal: #273c43;
+  --bordure: rgba(48, 43, 38, 0.18);
+  --bordure-douce: rgba(48, 43, 38, 0.10);
+  --ombre-app: 0 20px 60px rgba(34, 28, 24, 0.24);
+
+  --primary-gradient: linear-gradient(160deg, var(--action-principale-debut), var(--action-principale-fin));
+  --secundary-gradient: linear-gradient(160deg, var(--action-secondaire-debut), var(--action-secondaire-fin));
+}
+
+html[data-skin="marbre"] {
+  color-scheme: light;
+}
+
+html[data-skin="basalte"] {
+  color-scheme: dark;
+
+  --background-img: url("./assets/pictures/BG_Basalte.webp");
+  --app-surface: rgba(28, 30, 31, 0.88);
+  --surface-pleine: #252829;
+  --surface-douce: rgba(44, 47, 48, 0.82);
+  --surface-challenge: rgba(39, 42, 43, 0.88);
+  --surface-technique: rgba(45, 40, 35, 0.90);
+  --texte-principal: #f0ece5;
+  --texte-secondaire: #c9c1b7;
+  --titre-principal: #efe5d5;
+  --bordure: rgba(239, 229, 213, 0.24);
+  --bordure-douce: rgba(239, 229, 213, 0.13);
+  --ombre-app: 0 24px 70px rgba(0, 0, 0, 0.48);
 }

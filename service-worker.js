@@ -12,7 +12,7 @@ try {
 }
 */
 
-const CACHE_NAME = 'evolution-cache-v1.0.1';
+const CACHE_NAME = 'evolution-cache-v1.1.0';
 const DEFAULT_ICON = '/core/assets/icons/default-192.png';
 
 const urlsToCache = [
@@ -24,7 +24,11 @@ const urlsToCache = [
   '/data/defis.js',
   '/core/style.css',
   '/core/app.js',
-  '/core/notifications.js'
+  '/core/notifications.js',
+  '/assets/pictures/BG_Marbre.webp',
+  '/assets/pictures/BG_Basalte.webp',
+  '/core/assets/fonts/Cinzel-Medium.ttf',
+  '/core/assets/fonts/Lora-Regular.ttf'
 ];
 
 

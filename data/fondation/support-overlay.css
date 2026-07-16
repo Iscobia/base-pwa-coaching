@@ -109,7 +109,7 @@
 }
 
 .support-sidebar-title {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-titre, 'Cinzel', serif);
   font-size: 1.9rem;
   line-height: 1.05;
   color: var(--support-accent-end);
@@ -319,9 +319,8 @@
 }
 
 .support-content h1,
-.support-content h2,
-.support-content h3 {
-  font-family: 'Cinzel', serif;
+.support-content h2 {
+  font-family: var(--font-titre, 'Cinzel', serif);
   font-weight: normal;
   letter-spacing: 0.2px;
   color: var(--support-accent-end);
@@ -340,6 +339,8 @@
 }
 
 .support-content h3 {
+  font-family: var(--font-texte, 'Lora', serif);
+  font-weight: 700;
   font-size: 1.2rem;
   line-height: 1.2;
   margin-bottom: 12px;
@@ -347,7 +348,7 @@
 
 .support-content p,
 .support-content li {
-  font-family: 'Poiret One', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: var(--font-texte, 'Lora', Georgia, serif);
   font-size: 1.06rem;
   line-height: 1.72;
   color: var(--support-text);

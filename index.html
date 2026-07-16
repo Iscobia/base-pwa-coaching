@@ -12,6 +12,12 @@
     <link id="app-favicon" rel="icon" href="core/assets/icons/EVOLUTION-192.png">
     <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/EVOLUTION-192.png">
     
+    <script>
+      (function () {
+        const savedSkin = localStorage.getItem('pwa_skin');
+        document.documentElement.dataset.skin = savedSkin === 'basalte' ? 'basalte' : 'marbre';
+      })();
+    </script>
     <!-- Styles -->
     <link rel="stylesheet" href="core/style.css">
     <link rel="stylesheet" href="theme.css">
@@ -75,6 +81,18 @@
     
 <body>
     <div class="app-container">
+
+        <section class="skin-switcher" aria-label="Apparence de l’application">
+          <span class="skin-switcher-label">Apparence</span>
+          <div class="skin-switcher-actions" role="group" aria-label="Choisir un fond">
+            <button type="button" class="skin-choice" data-skin-choice="marbre" aria-pressed="false">
+              ☼ Marbre
+            </button>
+            <button type="button" class="skin-choice" data-skin-choice="basalte" aria-pressed="false">
+              ◐ Basalte
+            </button>
+          </div>
+        </section>
         <div id="program-selector"></div>
         <!-- En-tête -->
         <header class="app-header">

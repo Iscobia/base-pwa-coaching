@@ -1891,23 +1891,6 @@ function setNoteForDay(day, text) {
     installButton.id = 'install-pwa-btn';
     installButton.className = 'install-btn';
     installButton.textContent = `📱 Installer ${INSTALL_APP_NAME} sur l'écran d'accueil`;
-    installButton.style.cssText = `
-      display: none;
-      width: calc(100% - 40px);
-      max-width: 400px;
-      margin: 20px auto 50px auto;
-      background: linear-gradient(160deg, #f29a0b 0%, #ed5d0e 100%);
-      color: white;
-      border: none;
-      padding: 16px 24px;
-     border-radius: 12px;
-     font-weight: bold;
-     font-size: 1.1rem;
-     cursor: pointer;
-     text-align: center;
-     box-shadow: 0 4px 15px rgba(11, 37, 47, 0.3);
-     transition: transform 0.2s, box-shadow 0.2s;
-    `;
     
     
         
@@ -2071,3 +2054,39 @@ console.log('- peutPasserAuJourSuivant()');
 console.log('- verifierEtAvancerJour()');
 
 })();
+
+
+// ===================================================================================
+// ========== APPARENCE : MARBRE / BASALTE ===========================================
+(function initSkinPreference() {
+  const STORAGE_KEY = 'pwa_skin';
+  const allowedSkins = new Set(['marbre', 'basalte']);
+
+  function applySkin(skin) {
+    const safeSkin = allowedSkins.has(skin) ? skin : 'marbre';
+    document.documentElement.dataset.skin = safeSkin;
+    localStorage.setItem(STORAGE_KEY, safeSkin);
+
+    document.querySelectorAll('[data-skin-choice]').forEach((button) => {
+      const isActive = button.dataset.skinChoice === safeSkin;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+  }
+
+  function bindSkinButtons() {
+    const savedSkin = localStorage.getItem(STORAGE_KEY);
+    applySkin(savedSkin || document.documentElement.dataset.skin || 'marbre');
+
+    document.querySelectorAll('[data-skin-choice]').forEach((button) => {
+      button.addEventListener('click', () => applySkin(button.dataset.skinChoice));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindSkinButtons, { once: true });
+  } else {
+    bindSkinButtons();
+  }
+})();
+
