@@ -26,6 +26,7 @@ h2,
 .app-header h1,
 #challenge-title {
   font-family: var(--font-titre);
+  text-align:center;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
