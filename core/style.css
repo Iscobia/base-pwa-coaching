@@ -1151,11 +1151,6 @@ button.madeup,
   color: var(--couleur-attention-foncee);
 }
 
-html[data-skin="basalte"] .trouble-item.warning,
-html[data-skin="basalte"] .backup-warning-note {
-  color: var(--texte-principal);
-}
-
 #install-pwa-btn.install-btn {
   display: none;
   width: calc(100% - 40px);
@@ -1181,48 +1176,51 @@ html[data-skin="basalte"] .backup-warning-note {
 
 .skin-switcher {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 10px;
   margin-bottom: 14px;
-}
-
-.skin-switcher-label {
-  color: var(--texte-secondaire);
-  font-size: 0.86rem;
 }
 
 .skin-switcher-actions {
   display: inline-flex;
-  border: 1px solid var(--bordure);
-  border-radius: var(--radius-net);
-  overflow: hidden;
-  background: var(--surface-douce);
+  gap: 8px;
 }
 
 .skin-choice {
   appearance: none;
-  border: 0;
-  border-right: 1px solid var(--bordure);
-  border-radius: 0;
-  padding: 8px 11px;
-  background: transparent;
-  color: var(--texte-principal);
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--bordure);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 0.84rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 }
 
-.skin-choice:last-child {
-  border-right: 0;
+.skin-choice:hover {
+  transform: translateY(-1px);
+}
+
+.skin-choice--marbre {
+  background: #ffffff;
+  color: #4b4b4b;
+}
+
+.skin-choice--basalte {
+  background: #090a0b;
+  color: #ffffff;
 }
 
 .skin-choice.is-active {
-  background: var(--titre-principal);
-  color: var(--surface-pleine);
+  box-shadow: 0 0 0 3px rgba(185, 128, 50, 0.28);
 }
 
-html[data-skin="basalte"] .skin-choice.is-active {
-  color: #252829;
+.skin-choice:not(.is-active) {
+  opacity: 0.62;
 }
 
 @media (max-width: 600px) {
@@ -1238,4 +1236,53 @@ html[data-skin="basalte"] .skin-choice.is-active {
   .skin-switcher {
     justify-content: center;
   }
+}
+
+
+/* Contrastes dépendants du skin */
+.day-progress {
+  background: var(--surface-douce);
+  color: var(--titre-principal);
+  border: 1px solid var(--bordure);
+}
+
+.pause-progression-btn {
+  background: var(--surface-douce);
+  color: var(--texte-principal);
+  border-color: var(--bordure);
+}
+
+.pause-progression-btn:hover {
+  background: var(--surface-challenge);
+}
+
+.pause-progression-btn.is-paused {
+  background: var(--surface-danger);
+  border-color: var(--couleur-danger);
+  color: var(--texte-danger);
+}
+
+.backup-warning-note {
+  background: var(--surface-attention);
+  color: var(--texte-attention);
+  border-color: var(--couleur-attention);
+}
+
+.trouble-item.warning {
+  background: var(--surface-danger);
+  color: var(--texte-danger);
+  border: 3px double var(--couleur-danger);
+}
+
+.trouble-item.warning p,
+.trouble-item.warning .small-note {
+  color: var(--texte-danger);
+}
+
+#notifications-toggle-btn {
+  border-radius: var(--radius-net);
+}
+
+.trouble-item.warning {
+  border-radius: var(--radius-net);
 }

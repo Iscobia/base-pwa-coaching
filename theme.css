@@ -67,6 +67,10 @@
   --surface-douce: rgba(255, 255, 255, 0.72);
   --surface-challenge: rgba(250, 249, 247, 0.86);
   --surface-technique: rgba(255, 248, 239, 0.88);
+  --surface-attention: rgba(246, 227, 210, 0.92);
+  --surface-danger: rgba(243, 218, 218, 0.92);
+  --texte-attention: #824919;
+  --texte-danger: #702020;
   --texte-principal: #2c2926;
   --texte-secondaire: #625d56;
   --titre-principal: #273c43;
@@ -86,11 +90,15 @@ html[data-skin="basalte"] {
   color-scheme: dark;
 
   --background-img: url("./assets/pictures/BG_Basalte.webp");
-  --app-surface: rgba(28, 30, 31, 0.88);
+  --app-surface: rgba(28, 20, 21, 0.50);
   --surface-pleine: #252829;
-  --surface-douce: rgba(44, 47, 48, 0.82);
+  --surface-douce: rgba(4, 7, 8, 0.30);
   --surface-challenge: rgba(39, 42, 43, 0.88);
   --surface-technique: rgba(45, 40, 35, 0.90);
+  --surface-attention: rgba(105, 72, 39, 0.48);
+  --surface-danger: rgba(92, 34, 34, 0.46);
+  --texte-attention: #f2d0aa;
+  --texte-danger: #f1c1c1;
   --texte-principal: #f0ece5;
   --texte-secondaire: #c9c1b7;
   --titre-principal: #efe5d5;
