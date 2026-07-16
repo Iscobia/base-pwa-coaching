@@ -14,15 +14,15 @@
   --radius-pill: 999px;
 
   /* États fonctionnels */
-  --couleur-valide: #2f7d57;
+  --couleur-valide: linear-gradient(160deg, #10b981 0%, #059669 100%);
   --couleur-valide-foncee: #215f42;
   --couleur-valide-claire: #dcefe5;
 
-  --couleur-manque: #a94442;
+  --couleur-manque: #ef4444;
   --couleur-manque-foncee: #7f2f2d;
   --couleur-manque-claire: #f4dddd;
 
-  --couleur-rattrapage: #c59a24;
+  --couleur-rattrapage: linear-gradient(135deg, #ffd722 0%, #f3b900 100%);
   --couleur-rattrapage-foncee: #8e6a10;
   --couleur-rattrapage-claire: #f4e8bd;
 
@@ -52,11 +52,10 @@
   --programme-reset-debut: #4f8068;
   --programme-reset-fin: #37604c;
 
-  /* Actions */
-  --action-principale-debut: #294b55;
-  --action-principale-fin: #18343d;
-  --action-secondaire-debut: #385b65;
-  --action-secondaire-fin: #24454f;
+  /* Couleur d’action principale */
+  --couleur-action: #294b55;
+
+  /* Bouton d’installation, volontairement séparé */
   --installation-debut: #b98032;
   --installation-fin: #8f5c1f;
 
@@ -78,8 +77,8 @@
   --bordure-douce: rgba(48, 43, 38, 0.10);
   --ombre-app: 0 20px 60px rgba(34, 28, 24, 0.24);
 
-  --primary-gradient: linear-gradient(160deg, var(--action-principale-debut), var(--action-principale-fin));
-  --secundary-gradient: linear-gradient(160deg, var(--action-secondaire-debut), var(--action-secondaire-fin));
+  --primary-gradient: var(--couleur-action);
+  --secundary-gradient: var(--couleur-action);
 }
 
 html[data-skin="marbre"] {
