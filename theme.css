@@ -51,6 +51,8 @@
   --ombre-app-marbre: 0 20px 60px rgba(34,28,24,.24);
   --couleur-action-marbre: #294b55;
 
+  --installation: linear-gradient(160deg, #b98032 0%, #8f5c1f 100%);
+
   /* BASALTE */
   --background-img-basalte: url("./assets/pictures/BG_Basalte.webp");
   --app-surface-basalte: rgba(28,20,21,.50);

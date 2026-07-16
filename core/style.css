@@ -983,8 +983,36 @@ body { color: var(--texte-principal); }
 .program-chip.theme-enveloppe.is-active { background: var(--programme-enveloppe); }
 .program-chip.theme-emergence.is-active { background: var(--programme-emergence); }
 .program-chip.theme-reset.is-active { background: var(--programme-reset); }
-#install-pwa-btn.install-btn { background: var(--installation); }
+#install-pwa-btn.install-btn {
+  display: none;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  margin: 20px auto 50px;
+  padding: 16px 24px;
 
+  background: var(--installation);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-net);
+
+  font-family: var(--font-texte);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#install-pwa-btn.install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.30);
+}
+
+#install-pwa-btn.install-btn:active {
+  transform: translateY(0);
+}
 .calendar-day,.program-chip,#install-pwa-btn,.warning-btn,.backup-warning-note,.trouble-item.warning,.danger-btn,#notifications-toggle-btn { border-radius: var(--radius-net); }
 
 .skin-switcher { display:flex; justify-content:flex-end; margin-bottom:14px; }
