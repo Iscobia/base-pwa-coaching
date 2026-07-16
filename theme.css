@@ -1,108 +1,120 @@
 /* =========================================================
    IDENTITÉ VISUELLE & SKINS
-   Modifie ici les couleurs globales de l'application.
+   Une seule source de vérité pour toutes les couleurs.
    ========================================================= */
 
 :root {
-  /* Polices */
   --font-titre: "Cinzel", Georgia, serif;
   --font-texte: "Lora", Georgia, serif;
 
-  /* Rayons */
   --radius-net: 4px;
   --radius-standard: 10px;
   --radius-pill: 999px;
 
-  /* États fonctionnels */
-  --couleur-valide: linear-gradient(160deg, #10b981 0%, #059669 100%);
-  --couleur-valide-foncee: #059669;
-  --couleur-valide-claire: #10b981;
+  /* COULEURS MÉTIER : identiques dans les deux skins */
+  --etat-valide: linear-gradient(160deg, #10b981 0%, #059669 100%);
+  --etat-manque: #ef4444;
+  --etat-rattrape: linear-gradient(135deg, #ffd722 0%, #f3b900 100%);
+  --etat-jour-courant: #f59e0b;
+  --etat-jour-courant-bordure: #d97706;
+  --etat-texte: #ffffff;
 
-  --couleur-manque: #ef4444;
-  --couleur-manque-foncee: #7f2f2d;
-  --couleur-manque-claire: #f4dddd;
+  --danger: linear-gradient(160deg, #dc2626 0%, #991b1b 100%);
+  --attention: linear-gradient(160deg, #f97316 0%, #ea580c 100%);
 
-  --couleur-rattrapage: linear-gradient(135deg, #ffd722 0%, #f3b900 100%);
-  --couleur-rattrapage-foncee: #8e6a10;
-  --couleur-rattrapage-claire: #f4e8bd;
+  --programme-fondation: linear-gradient(160deg, #8e5aa8 0%, #563565 100%);
+  --programme-envol: linear-gradient(160deg, #223d45 0%, #152c34 100%);
+  --programme-origine: linear-gradient(160deg, #b34d45 0%, #873832 100%);
+  --programme-enveloppe: linear-gradient(160deg, #4f8068 0%, #37604c 100%);
+  --programme-emergence: linear-gradient(160deg, #bd8730 0%, #8f6220 100%);
+  --programme-reset: linear-gradient(160deg, #4f8068 0%, #37604c 100%);
+  --installation: linear-gradient(160deg, #b98032 0%, #8f5c1f 100%);
 
-  --couleur-danger: #9f3030;
-  --couleur-danger-foncee: #702020;
-  --couleur-danger-claire: #f3dada;
+  /* MARBRE */
+  --background-img-marbre: url("./assets/pictures/BG_Marbre.webp");
+  --app-surface-marbre: rgba(255,255,255,.90);
+  --surface-pleine-marbre: #ffffff;
+  --surface-douce-marbre: rgba(255,255,255,.72);
+  --surface-challenge-marbre: rgba(250,249,247,.86);
+  --surface-technique-marbre: rgba(255,248,239,.88);
+  --surface-attention-marbre: rgba(246,227,210,.92);
+  --surface-danger-marbre: rgba(243,218,218,.92);
+  --jour-futur-fond-marbre: rgba(11,37,47,.08);
+  --jour-futur-texte-marbre: #0b252f;
+  --texte-principal-marbre: #2c2926;
+  --texte-secondaire-marbre: #625d56;
+  --titre-principal-marbre: #273c43;
+  --texte-attention-marbre: #824919;
+  --texte-danger-marbre: #702020;
+  --bordure-marbre: rgba(48,43,38,.18);
+  --bordure-douce-marbre: rgba(48,43,38,.10);
+  --ombre-app-marbre: 0 20px 60px rgba(34,28,24,.24);
+  --couleur-action-marbre: #294b55;
 
-  --couleur-attention: #b86f2b;
-  --couleur-attention-foncee: #824919;
-  --couleur-attention-claire: #f6e3d2;
+  /* BASALTE */
+  --background-img-basalte: url("./assets/pictures/BG_Basalte.webp");
+  --app-surface-basalte: rgba(28,20,21,.50);
+  --surface-pleine-basalte: #252829;
+  --surface-douce-basalte: rgba(4,7,8,.30);
+  --surface-challenge-basalte: rgba(39,42,43,.88);
+  --surface-technique-basalte: rgba(45,40,35,.90);
+  --surface-attention-basalte: rgba(105,72,39,.48);
+  --surface-danger-basalte: rgba(92,34,34,.46);
+  --jour-futur-fond-basalte: rgba(200,200,200,.10);
+  --jour-futur-texte-basalte: #ffffff;
+  --texte-principal-basalte: #f0ece5;
+  --texte-secondaire-basalte: #c9c1b7;
+  --titre-principal-basalte: #efe5d5;
+  --texte-attention-basalte: #f2d0aa;
+  --texte-danger-basalte: #f1c1c1;
+  --bordure-basalte: rgba(239,229,213,.24);
+  --bordure-douce-basalte: rgba(239,229,213,.13);
+  --ombre-app-basalte: 0 24px 70px rgba(0,0,0,.48);
+  --couleur-action-basalte: #c9b28f;
 
-  --couleur-info: #365f7a;
-  --couleur-info-foncee: #27485d;
-  --couleur-info-claire: #dce8ef;
-
-  /* Programmes */
-  --programme-fondation-debut: #8e5aa8;
-  --programme-fondation-fin: #563565;
-  --programme-envol-debut: #223d45;
-  --programme-envol-fin: #152c34;
-  --programme-origine-debut: #b34d45;
-  --programme-origine-fin: #873832;
-  --programme-enveloppe-debut: #4f8068;
-  --programme-enveloppe-fin: #37604c;
-  --programme-emergence-debut: #bd8730;
-  --programme-emergence-fin: #8f6220;
-  --programme-reset-debut: #4f8068;
-  --programme-reset-fin: #37604c;
-
-  /* Couleur d’action principale */
-  --couleur-action: #294b55;
-
-  /* Bouton d’installation, volontairement séparé */
-  --installation-debut: #b98032;
-  --installation-fin: #8f5c1f;
-
-  /* Skin clair : Marbre */
-  --background-img: url("./assets/pictures/BG_Marbre.webp");
-  --app-surface: rgba(255, 255, 255, 0.90);
-  --surface-pleine: #ffffff;
-  --surface-douce: rgba(255, 255, 255, 0.72);
-  --surface-challenge: rgba(250, 249, 247, 0.86);
-  --surface-technique: rgba(255, 248, 239, 0.88);
-  --surface-attention: rgba(246, 227, 210, 0.92);
-  --surface-danger: rgba(243, 218, 218, 0.92);
-  --texte-attention: #824919;
-  --texte-danger: #702020;
-  --texte-principal: #2c2926;
-  --texte-secondaire: #625d56;
-  --titre-principal: #273c43;
-  --bordure: rgba(48, 43, 38, 0.18);
-  --bordure-douce: rgba(48, 43, 38, 0.10);
-  --ombre-app: 0 20px 60px rgba(34, 28, 24, 0.24);
-
-  --primary-gradient: var(--couleur-action);
-  --secundary-gradient: var(--couleur-action);
+  /* Variables actives : Marbre par défaut */
+  --background-img: var(--background-img-marbre);
+  --app-surface: var(--app-surface-marbre);
+  --surface-pleine: var(--surface-pleine-marbre);
+  --surface-douce: var(--surface-douce-marbre);
+  --surface-challenge: var(--surface-challenge-marbre);
+  --surface-technique: var(--surface-technique-marbre);
+  --surface-attention: var(--surface-attention-marbre);
+  --surface-danger: var(--surface-danger-marbre);
+  --jour-futur-fond: var(--jour-futur-fond-marbre);
+  --jour-futur-texte: var(--jour-futur-texte-marbre);
+  --texte-principal: var(--texte-principal-marbre);
+  --texte-secondaire: var(--texte-secondaire-marbre);
+  --titre-principal: var(--titre-principal-marbre);
+  --texte-attention: var(--texte-attention-marbre);
+  --texte-danger: var(--texte-danger-marbre);
+  --bordure: var(--bordure-marbre);
+  --bordure-douce: var(--bordure-douce-marbre);
+  --ombre-app: var(--ombre-app-marbre);
+  --couleur-action: var(--couleur-action-marbre);
 }
 
-html[data-skin="marbre"] {
-  color-scheme: light;
-}
+html[data-skin="marbre"] { color-scheme: light; }
 
 html[data-skin="basalte"] {
   color-scheme: dark;
-
-  --background-img: url("./assets/pictures/BG_Basalte.webp");
-  --app-surface: rgba(28, 20, 21, 0.50);
-  --surface-pleine: #252829;
-  --surface-douce: rgba(4, 7, 8, 0.30);
-  --surface-challenge: rgba(39, 42, 43, 0.88);
-  --surface-technique: rgba(45, 40, 35, 0.90);
-  --surface-attention: rgba(105, 72, 39, 0.48);
-  --surface-danger: rgba(92, 34, 34, 0.46);
-  --texte-attention: #f2d0aa;
-  --texte-danger: #f1c1c1;
-  --texte-principal: #f0ece5;
-  --texte-secondaire: #c9c1b7;
-  --titre-principal: #efe5d5;
-  --bordure: rgba(239, 229, 213, 0.24);
-  --bordure-douce: rgba(239, 229, 213, 0.13);
-  --ombre-app: 0 24px 70px rgba(0, 0, 0, 0.48);
-  --couleur-action: #c9b28f;
+  --background-img: var(--background-img-basalte);
+  --app-surface: var(--app-surface-basalte);
+  --surface-pleine: var(--surface-pleine-basalte);
+  --surface-douce: var(--surface-douce-basalte);
+  --surface-challenge: var(--surface-challenge-basalte);
+  --surface-technique: var(--surface-technique-basalte);
+  --surface-attention: var(--surface-attention-basalte);
+  --surface-danger: var(--surface-danger-basalte);
+  --jour-futur-fond: var(--jour-futur-fond-basalte);
+  --jour-futur-texte: var(--jour-futur-texte-basalte);
+  --texte-principal: var(--texte-principal-basalte);
+  --texte-secondaire: var(--texte-secondaire-basalte);
+  --titre-principal: var(--titre-principal-basalte);
+  --texte-attention: var(--texte-attention-basalte);
+  --texte-danger: var(--texte-danger-basalte);
+  --bordure: var(--bordure-basalte);
+  --bordure-douce: var(--bordure-douce-basalte);
+  --ombre-app: var(--ombre-app-basalte);
+  --couleur-action: var(--couleur-action-basalte);
 }
