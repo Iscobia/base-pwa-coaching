@@ -196,7 +196,7 @@ body {
 /* =========== CHANGEMENT DE COULEURS DU BOUTON DE VALIDATION ========== */
 
 .validate-btn {
-  background: linear-gradient(160deg, #10b981 0%, #059669 100%);
+  background: #10b981;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -314,8 +314,8 @@ body {
 }
 
 .calendar-day.upcoming {
-  background: rgba(11, 37, 47, 0.08);
-  color: #0b252f;
+  rgba(200, 200, 200, 0.1);
+  color: #ffffff;
 }
 
 .calendar-day:hover {
