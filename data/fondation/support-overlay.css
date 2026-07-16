@@ -109,7 +109,7 @@
 }
 
 .support-sidebar-title {
-  font-family: 'Amperzand Sekhamet', serif;
+  font-family: 'Cinzel', serif;
   font-size: 1.9rem;
   line-height: 1.05;
   color: var(--support-accent-end);
@@ -321,7 +321,7 @@
 .support-content h1,
 .support-content h2,
 .support-content h3 {
-  font-family: 'Amperzand Sekhamet', serif;
+  font-family: 'Cinzel', serif;
   font-weight: normal;
   letter-spacing: 0.2px;
   color: var(--support-accent-end);
