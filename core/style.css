@@ -12,16 +12,16 @@
 /* =========================================== */
 
 @font-face {
-  font-family: 'Amperzand Sekhamet';
-  src: url('./assets/fonts/AmperzandSekhamet_ACCENTS.ttf') format('truetype');
+  font-family: 'Cinzel';
+  src: url('./assets/fonts/Cinzel-Medium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap; /* Améliore le chargement */
 }
 
 @font-face {
-  font-family: 'Poiret One';
-  src: url('./assets/fonts/PoiretOne-Regular.ttf') format('truetype');
+  font-family: 'Lora';
+  src: url('./assets/fonts/Lora-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -29,17 +29,17 @@
 
 /* ========== APPLICATION DES POLICES ========== */
 body {
-  font-family: 'Poiret One', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: 'Lora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   /* ... reste inchangé ... */
 }
 
-/* Titres avec la police Amperzand */
+/* Titres avec la police Cinzel */
 .app-header h1,
 #challenge-title,
 .calendar-section h3,
 .notifications-settings h3,
 .troubleshooting h3 {
-  font-family: 'Amperzand Sekhamet', serif;
+  font-family: 'Cinzel', serif;
   font-weight: normal;
   letter-spacing: 0.5px; /* Optionnel pour meilleure lisibilité */
 }
@@ -948,7 +948,7 @@ backup-p {margin: 30px 0 2px 0px;}
 }
 
 .program-selector-grid[data-layout="hub-with-fondation"] .program-chip.theme-fondation {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1;}
 
 @media (max-width: 700px) {
   .program-selector-grid[data-layout="hub-with-fondation"] .program-chip.theme-fondation {
