@@ -1088,6 +1088,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  margin-bottom: 25px;
 }
 
 .backup-btn:hover,
@@ -1163,7 +1164,7 @@ body {
 }
 
 .backup-btn.toggle-off {
-  background: linear-gradient(135deg, #e42b2f 0%, #b8161d 100%) !important;
+  background: linear-gradient(135deg, #b8161d 0%, #e42b2f 40%, #b40e16 55%, #890006 100%) !important;
   color: #ffffff;
   border-color: transparent;
 }
