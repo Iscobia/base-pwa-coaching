@@ -362,6 +362,8 @@ body {
   text-align: center;
   /* Force l'alignement précis */
   min-height: 100px; /* Garantit une hauteur minimale */
+  margin-top:15px;
+  margin-bottom: 50px;
 }
   
 .footer-logo {
