@@ -24,11 +24,11 @@
 
   --programme-fondation: linear-gradient(160deg, #8e5aa8 0%, #563565 100%);
   --programme-envol: linear-gradient(160deg, #223d45 0%, #152c34 100%);
-  --programme-origine: linear-gradient(160deg, #b34d45 0%, #873832 100%);
+  --programme-origine: linear-gradient(160deg, #c5302f 0%, #b91f1e 100%);
   --programme-enveloppe: linear-gradient(160deg, #4f8068 0%, #37604c 100%);
-  --programme-emergence: linear-gradient(160deg, #bd8730 0%, #8f6220 100%);
+  --programme-emergence: linear-gradient(135deg, #e38b26 0%, #c96e06 100%);
   --programme-reset: linear-gradient(160deg, #4f8068 0%, #37604c 100%);
-  --installation: linear-gradient(160deg, #b98032 0%, #8f5c1f 100%);
+  --installation: linear-gradient(135deg, #1e7b53 0%, #0bca7e 40%, #1c9b64 55%, #097540 100%);
 
   /* MARBRE */
   --background-img-marbre: url("./assets/pictures/BG_Marbre.webp");
