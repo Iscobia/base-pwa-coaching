@@ -1960,9 +1960,10 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
                 })
               );
             } else if (
-              backupData.notes &&
-              typeof backupData.notes === 'object'
-            ) {
+                backupData.notes &&
+                typeof backupData.notes === 'object' &&
+                !Array.isArray(backupData.notes)
+              ) {
               /*
                * Ancienne sauvegarde qui contiendrait déjà
                * un objet de notes.
