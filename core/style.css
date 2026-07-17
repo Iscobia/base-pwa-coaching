@@ -1309,8 +1309,9 @@ body {
   }
 
   .notes-journal {
-    //max-height: 40vh; // Signifie que ça prend 40% de la hauteur disponible + la barre supérieure
-    max-height: 40dvh; // Signifie que ça prend uniquement 40% de l'écran réellement utilisé pour montrer l'app
+    /* max-height: 40vh; */
+    /* ^ Signifie que ça prend 40% de la hauteur disponible + la barre supérieure*/
+    max-height: 40dvh; /* Signifie que ça prend uniquement 40% de l'écran réellement utilisé pour montrer l'app */
     padding-right: 4px;
   }
 

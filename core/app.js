@@ -1493,6 +1493,33 @@ function scheduleNoteSave(day, value) {
   notesSaveTimers.set(day, timer);
 }
 
+// S'assurer que toutes les sauvegardes de notes sont bien terminées
+// avant d'exporter une sauvegarde
+
+function flushPendingNotes() {
+  const notes = getNotesMap();
+
+  document.querySelectorAll('.notes-day-textarea').forEach((textarea) => {
+    const noteDayElement = textarea.closest('.notes-day');
+    const day = noteDayElement?.dataset.noteDay;
+
+    if (!day) return;
+
+    const value = textarea.value;
+
+    if (value.trim()) {
+      notes[day] = value;
+    } else {
+      delete notes[day];
+    }
+  });
+
+  notesSaveTimers.forEach((timer) => clearTimeout(timer));
+  notesSaveTimers.clear();
+
+  lsSet(NOTES_STORAGE_KEY, JSON.stringify(notes));
+  setNotesStatus('✓ Sauvegardé');
+}
 
 
 function autoResizeNoteTextarea(textarea) {
@@ -1761,28 +1788,47 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
 
 
       // 4. EXPORTER SAUVEGARDE
-      document.getElementById('export-backup-btn')?.addEventListener('click', function() {
-        const backupData = {
-        version: '1.0',
-        appId: APP_ID,
-        appName: APP_NAME,
-        timestamp: new Date().toISOString(),
-        progression: JSON.parse(lsGet('defis_progression', '[]')),
-        jourActuel: lsGet('jour_actuel', '1'),
-        dernierChangement: lsGet('dernier_changement_jour', null),
-        heureNotification: lsGet('heure_notification', '08:00'),
-        notesByDay: JSON.parse(lsGet('notes_by_day', '{}')),
-      };
-        const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `sauvegarde-${APP_ID}-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        alert('✅ Sauvegarde exportée !');
+      document.getElementById('export-backup-btn')?.addEventListener('click', function () {
+        try {
+          flushPendingNotes();
+
+          const backupData = {
+            version: '1.1',
+            appId: APP_ID,
+            appName: APP_NAME,
+            timestamp: new Date().toISOString(),
+            progression: JSON.parse(lsGet('defis_progression', '[]')),
+            jourActuel: lsGet('jour_actuel', '1'),
+            dernierChangement: lsGet('dernier_changement_jour', null),
+            heureNotification: lsGet('heure_notification', '08:00'),
+            defisMadeup: JSON.parse(lsGet('defis_madeup', '[]')),
+            notesByDay: JSON.parse(lsGet('notes_by_day', '{}'))
+          };
+
+          const blob = new Blob(
+            [JSON.stringify(backupData, null, 2)],
+            { type: 'application/json' }
+          );
+
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+
+          link.href = url;
+          link.download =
+            `sauvegarde-${APP_ID}-${new Date().toISOString().split('T')[0]}.json`;
+
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+
+          alert('✅ Sauvegarde exportée !');
+        } catch (error) {
+          console.error('Erreur export :', error);
+          alert(
+            '❌ La sauvegarde n’a pas pu être créée. Certaines données locales semblent illisibles.'
+          );
+        }
       });
 
 
@@ -1876,8 +1922,23 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
              * }
              */
             if (
+              Array.isArray(backupData.defisMadeup)
+            ) {
+              lsSet(
+                'defis_madeup',
+                JSON.stringify(backupData.defisMadeup)
+              );
+            } else {
+              lsSet(
+                'defis_madeup',
+                JSON.stringify([])
+              );
+            }
+
+            if (
               backupData.notesByDay &&
-              typeof backupData.notesByDay === 'object'
+              typeof backupData.notesByDay === 'object' &&
+              !Array.isArray(backupData.notesByDay)
             ) {
               lsSet(
                 'notes_by_day',
