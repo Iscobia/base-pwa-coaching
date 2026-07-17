@@ -51,8 +51,6 @@
   --ombre-app-marbre: 0 20px 60px rgba(34,28,24,.24);
   --couleur-action-marbre: #294b55;
 
-  --installation: linear-gradient(160deg, #b98032 0%, #8f5c1f 100%);
-
   /* BASALTE */
   --background-img-basalte: url("./assets/pictures/BG_Basalte.webp");
   --app-surface-basalte: rgba(28,20,21,.50);
@@ -74,6 +72,34 @@
   --ombre-app-basalte: 0 24px 70px rgba(0,0,0,.48);
   --couleur-action-basalte: #c9b28f;
 
+  /* BLOC TECHNIQUE — MARBRE */
+  --tech-button-fond-marbre: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
+  --tech-button-texte-marbre: #4a4a4a;
+  --tech-button-bordure-marbre: #777777;
+  --tech-cache-fond-marbre: linear-gradient(135deg, #c8792d 0%, #9e571d 100%);
+  --tech-cache-texte-marbre: #ffffff;
+  --tech-info-fond-marbre: rgba(255,255,255,.18);
+  --tech-info-bordure-marbre: rgba(199,121,45,.34);
+
+  --danger-cadre-fond-marbre: transparent;
+  --danger-cadre-bordure-marbre: #a7282d;
+  --danger-bouton-fond-marbre: linear-gradient(135deg, #a83236 0%, #7f2024 100%);
+  --danger-bouton-texte-marbre: #ffffff;
+
+  /* BLOC TECHNIQUE — BASALTE */
+  --tech-button-fond-basalte: linear-gradient(135deg, #3c3d3f 0%, #171819 100%);
+  --tech-button-texte-basalte: #f4f1ec;
+  --tech-button-bordure-basalte: #65676a;
+  --tech-cache-fond-basalte: linear-gradient(135deg, #a96025 0%, #704019 100%);
+  --tech-cache-texte-basalte: #ffffff;
+  --tech-info-fond-basalte: rgba(255,255,255,.035);
+  --tech-info-bordure-basalte: rgba(201,178,143,.30);
+
+  --danger-cadre-fond-basalte: transparent;
+  --danger-cadre-bordure-basalte: #bd4b50;
+  --danger-bouton-fond-basalte: linear-gradient(135deg, #8d2b30 0%, #59191d 100%);
+  --danger-bouton-texte-basalte: #ffffff;
+
   /* Variables actives : Marbre par défaut */
   --background-img: var(--background-img-marbre);
   --app-surface: var(--app-surface-marbre);
@@ -94,6 +120,18 @@
   --bordure-douce: var(--bordure-douce-marbre);
   --ombre-app: var(--ombre-app-marbre);
   --couleur-action: var(--couleur-action-marbre);
+
+  --tech-button-fond: var(--tech-button-fond-marbre);
+  --tech-button-texte: var(--tech-button-texte-marbre);
+  --tech-button-bordure: var(--tech-button-bordure-marbre);
+  --tech-cache-fond: var(--tech-cache-fond-marbre);
+  --tech-cache-texte: var(--tech-cache-texte-marbre);
+  --tech-info-fond: var(--tech-info-fond-marbre);
+  --tech-info-bordure: var(--tech-info-bordure-marbre);
+  --danger-cadre-fond: var(--danger-cadre-fond-marbre);
+  --danger-cadre-bordure: var(--danger-cadre-bordure-marbre);
+  --danger-bouton-fond: var(--danger-bouton-fond-marbre);
+  --danger-bouton-texte: var(--danger-bouton-texte-marbre);
 }
 
 html[data-skin="marbre"] { color-scheme: light; }
@@ -119,4 +157,16 @@ html[data-skin="basalte"] {
   --bordure-douce: var(--bordure-douce-basalte);
   --ombre-app: var(--ombre-app-basalte);
   --couleur-action: var(--couleur-action-basalte);
+
+  --tech-button-fond: var(--tech-button-fond-basalte);
+  --tech-button-texte: var(--tech-button-texte-basalte);
+  --tech-button-bordure: var(--tech-button-bordure-basalte);
+  --tech-cache-fond: var(--tech-cache-fond-basalte);
+  --tech-cache-texte: var(--tech-cache-texte-basalte);
+  --tech-info-fond: var(--tech-info-fond-basalte);
+  --tech-info-bordure: var(--tech-info-bordure-basalte);
+  --danger-cadre-fond: var(--danger-cadre-fond-basalte);
+  --danger-cadre-bordure: var(--danger-cadre-bordure-basalte);
+  --danger-bouton-fond: var(--danger-bouton-fond-basalte);
+  --danger-bouton-texte: var(--danger-bouton-texte-basalte);
 }

@@ -143,25 +143,18 @@
               </button>
             </div>
         </section>
-
-        <!-- Mes notes -->
-        <section class="notes-box" aria-label="Mes notes">
+        <!-- Journal des notes -->
+        <section class="notes-box" aria-labelledby="notes-title">
           <div class="notes-head">
-            <h3>Mes notes 📝</h3>
-            <small id="notes-status" class="notes-status"></small>
+            <h3 id="notes-title">Notes</h3>
+            <small id="notes-status" class="notes-status" aria-live="polite"></small>
           </div>
-        
-          <textarea
-            id="notes-textarea"
-            class="notes-textarea"
-            placeholder="Écris ici ce que tu ressens, ce que tu observes, tes prises de conscience…"
-            rows="6"></textarea>
-        
-          <div class="notes-actions">
-            <button id="clear-notes-btn" class="notes-clear-btn" type="button">
-              🧹 Effacer les notes du jour
-            </button>
-          </div>
+
+          <div
+            id="notes-journal"
+            class="notes-journal"
+            aria-label="Suivi chronologique de mes notes"
+          ></div>
         </section>
 
        

@@ -12,7 +12,7 @@ try {
 }
 */
 
-const CACHE_NAME = 'evolution-cache-v1.1.0';
+const CACHE_NAME = 'evolution-cache-v1.2.0';
 const DEFAULT_ICON = '/core/assets/icons/default-192.png';
 
 const urlsToCache = [

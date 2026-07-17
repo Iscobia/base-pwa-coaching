@@ -331,7 +331,7 @@ console.log('🔍 Boutons trouvés:', {
       
       // Message pour Firefox
       const firefoxWarning = document.createElement('div');
-      firefoxWarning.className = 'browser-warning.firefox';
+      firefoxWarning.className = 'browser-warning firefox';
       firefoxWarning.innerHTML = `
         <p><strong>🦊 Firefox détecté :</strong></p>
         <p>Tes notifications peuvent être bloquées par la "Protection renforcée".</p>

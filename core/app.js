@@ -1422,49 +1422,171 @@ function verifierEtAvancerJour() {
 
 // ===== FIN de Notification Jouralière à l'ouverture de l'app ===== //
 
-// ===== Notes (stockées localement) =====
-const NOTES_KEY = 'notes';
 
-function getAllNotes() {
-  try { return JSON.parse(lsGet(NOTES_KEY, '{}')); }
-  catch { return {}; }
+
+
+// ===================================================================================
+// ========== JOURNAL DES NOTES =======================================================
+const NOTES_STORAGE_KEY = 'notes_by_day';
+const notesSaveTimers = new Map();
+
+function getNotesMap() {
+  try {
+    const current = JSON.parse(lsGet(NOTES_STORAGE_KEY, '{}'));
+    if (current && typeof current === 'object' && !Array.isArray(current)) {
+      return current;
+    }
+  } catch (error) {
+    console.warn('⚠️ Notes illisibles, tentative de migration.', error);
+  }
+
+  return {};
 }
 
-function getNoteForDay(day) {
-  const notes = getAllNotes();
-  return notes[String(day)] || '';
+function migrateLegacyNotes() {
+  const current = getNotesMap();
+  if (Object.keys(current).length > 0) return current;
+
+  try {
+    const legacy = JSON.parse(lsGet('notes', '{}'));
+    if (legacy && typeof legacy === 'object' && !Array.isArray(legacy)) {
+      lsSet(NOTES_STORAGE_KEY, JSON.stringify(legacy));
+      lsRemove('notes');
+      return legacy;
+    }
+  } catch (error) {
+    console.warn('⚠️ Anciennes notes non migrées.', error);
+  }
+
+  return current;
 }
 
 function setNoteForDay(day, text) {
-  const notes = getAllNotes();
-  const k = String(day);
-  const v = String(text || '');
+  const notes = getNotesMap();
+  const key = String(day);
+  const value = String(text || '');
 
-  if (v.trim() === '') {
-    delete notes[k];
+  if (value.trim()) {
+    notes[key] = value;
   } else {
-    notes[k] = v;
+    delete notes[key];
   }
-  lsSet(NOTES_KEY, JSON.stringify(notes));
+
+  lsSet(NOTES_STORAGE_KEY, JSON.stringify(notes));
 }
 
-// ===== Fin des Notes (stockées localement) =====
+function setNotesStatus(message) {
+  const status = document.getElementById('notes-status');
+  if (!status) return;
+  status.textContent = message || '';
+}
+
+function scheduleNoteSave(day, value) {
+  const previousTimer = notesSaveTimers.get(day);
+  if (previousTimer) clearTimeout(previousTimer);
+
+  setNotesStatus('Sauvegarde…');
+
+  const timer = setTimeout(() => {
+    setNoteForDay(day, value);
+    notesSaveTimers.delete(day);
+    setNotesStatus('✓ Sauvegardé');
+
+    setTimeout(() => {
+      if (notesSaveTimers.size === 0) setNotesStatus('');
+    }, 1400);
+  }, 350);
+
+  notesSaveTimers.set(day, timer);
+}
+
+function createNoteDayElement(day, notes, currentDay, selectedDay) {
+  const item = document.createElement('article');
+  item.className = 'notes-day';
+  item.dataset.noteDay = String(day);
+
+  if (day === selectedDay) item.classList.add('is-selected');
+
+  const title = document.createElement('h4');
+  title.className = 'notes-day-title';
+  title.textContent = `Jour ${day} :`;
+  item.appendChild(title);
+
+  if (day > currentDay) {
+    item.classList.add('is-future');
+
+    const locked = document.createElement('p');
+    locked.className = 'notes-future-message';
+    locked.textContent = 'La prise de note sera disponible le jour venu.';
+    item.appendChild(locked);
+    return item;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.className = 'notes-day-textarea';
+  textarea.dataset.noteDayInput = String(day);
+  textarea.rows = 2;
+  textarea.value = notes[String(day)] || '';
+  textarea.placeholder = 'Écris ici ce que tu ressens, ce que tu observes, tes prises de conscience…';
+  textarea.setAttribute('aria-label', `Note du jour ${day}`);
+
+  textarea.addEventListener('input', () => {
+    scheduleNoteSave(day, textarea.value);
+  });
+
+  item.appendChild(textarea);
+  return item;
+}
+
+function renderNotesJournal(selectedDay = null, shouldFocus = false) {
+  const journal = document.getElementById('notes-journal');
+  if (!journal) return;
+
+  const notes = migrateLegacyNotes();
+  const totalDays = Math.max(1, Number(APP.TOTAL_DAYS) || 1);
+  const currentDay = Math.max(1, parseInt(jourActuel, 10) || 1);
+  const safeSelectedDay = Math.min(
+    totalDays,
+    Math.max(1, parseInt(selectedDay, 10) || parseInt(jourAffiche, 10) || currentDay)
+  );
+
+  journal.innerHTML = '';
+
+  const fragment = document.createDocumentFragment();
+  for (let day = 1; day <= totalDays; day += 1) {
+    fragment.appendChild(
+      createNoteDayElement(day, notes, currentDay, safeSelectedDay)
+    );
+  }
+  journal.appendChild(fragment);
+
+  if (!shouldFocus) return;
+
+  requestAnimationFrame(() => {
+    const selected = journal.querySelector(
+      `[data-note-day="${safeSelectedDay}"]`
+    );
+    if (!selected) return;
+
+    selected.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+
+    if (safeSelectedDay <= currentDay) {
+      const textarea = selected.querySelector('[data-note-day-input]');
+      textarea?.focus({ preventScroll: true });
+    }
+  });
+}
+// ========== FIN DU JOURNAL DES NOTES ================================================
 
 
     // ========== FONCTIONS D'AFFICHAGE (MODIFIÉES) ==========
 
-  function afficherDefiDuJour(jour) {
+  function afficherDefiDuJour(jour, options = {}) {
       const defi = getDefiByDay(jour);
       if (!defi) return;
-
-
-    // Pour que quand on clique un jour du calendrier ou quand le jour avance,
-    // les notes affichées suivent: ==========================================
-      const notesTextarea = document.getElementById('notes-textarea');
-      const notesStatus = document.getElementById('notes-status');
-      if (notesTextarea) notesTextarea.value = getNoteForDay(jour);
-      if (notesStatus) notesStatus.textContent = '';
-    // =======================================================================
 
       jourAffiche = jour; // 👈 IMPORTANT
 
@@ -1474,15 +1596,9 @@ function setNoteForDay(day, text) {
       if (dayTotalElement) dayTotalElement.textContent = String(APP.TOTAL_DAYS || 0);
       if (challengeTitleElement) challengeTitleElement.textContent = defi.titre;
       if (challengeDescriptionElement) challengeDescriptionElement.textContent = defi.description;
-
-
-  // Notes : charger celles du jour affiché
-  if (notesTextarea) notesTextarea.value = getNoteForDay(jour);
-  if (notesStatus) notesStatus.textContent = '';
-
-  // ✅ Mettre à jour le bouton selon l'état du jour affiché
+// ✅ Mettre à jour le bouton selon l'état du jour affiché
   updateMarkDoneButtonUI(jour);
-  refreshNotesUIForDay(jour);
+  renderNotesJournal(jour, Boolean(options.focusNote));
   // Vérifier s'il faut mettre l'overlay de défis terminés
   updateProgramCompleteOverlay();
 
@@ -1568,7 +1684,7 @@ function setNoteForDay(day, text) {
           dayElement.classList.add('upcoming'); // Gris
         }
 
-        dayElement.addEventListener('click', () => afficherDefiDuJour(jour));
+        dayElement.addEventListener('click', () => afficherDefiDuJour(jour, { focusNote: true }));
         calendarGrid.appendChild(dayElement);
       }
       centrerCalendrierSurJour(jourActuel);
@@ -1594,92 +1710,6 @@ function setNoteForDay(day, text) {
     }
 
 
-// ========== NOTES (par jour) ==========
-
-    // 1) Références DOM
-    const notesTextarea = document.getElementById('notes-textarea');
-    const clearNotesBtn = document.getElementById('clear-notes-btn');
-    const notesStatusEl = document.getElementById('notes-status');
-    notesSaveTimer = null;
-
-    // 2) Helpers stockage
-    function getNotesMap() {
-      try {
-        return JSON.parse(lsGet('notes_by_day', '{}'));
-      } catch {
-        return {};
-      }
-    }
-
-    function setNotesMap(map) {
-      lsSet('notes_by_day', JSON.stringify(map));
-    }
-
-    function getNoteForDay(day) {
-      const map = getNotesMap();
-      return map[String(day)] || '';
-    }
-
-    function setNoteForDay(day, text) {
-      const map = getNotesMap();
-      const key = String(day);
-      if (!text || !text.trim()) {
-        delete map[key];
-      } else {
-        map[key] = text;
-      }
-      setNotesMap(map);
-    }
-
-    function setNotesStatus(msg) {
-      if (!notesStatusEl) return;
-      notesStatusEl.textContent = msg || '';
-    }
-
-    // 3) Charger les notes du jour affiché (à appeler quand on change de jour)
-    function refreshNotesUIForDay(day) {
-      if (!notesTextarea) return;
-      notesTextarea.value = getNoteForDay(day);
-      setNotesStatus('');
-    }
-
-    // 4) Listeners
-    if (notesTextarea) {
-      notesTextarea.addEventListener('input', () => {
-        const day =
-          parseInt(jourAffiche, 10) ||
-          (parseInt(lsGet('jour_actuel', '1'), 10) || 1);
-
-        setNotesStatus('Sauvegarde…');
-        clearTimeout(notesSaveTimer);
-
-        notesSaveTimer = setTimeout(() => {
-          setNoteForDay(day, notesTextarea.value);
-          setNotesStatus('✅ Sauvegardé');
-          setTimeout(() => setNotesStatus(''), 1500);
-        }, 350);
-      });
-    }
-
-    if (clearNotesBtn && notesTextarea) {
-      clearNotesBtn.addEventListener('click', () => {
-        const day =
-          parseInt(jourAffiche, 10) ||
-          (parseInt(lsGet('jour_actuel', '1'), 10) || 1);
-
-        if (!confirm('Effacer les notes de ce jour ?')) return;
-
-        notesTextarea.value = '';
-        setNoteForDay(day, '');
-        setNotesStatus('🧹 Notes effacées');
-        setTimeout(() => setNotesStatus(''), 1500);
-      });
-    }
-
-    // 5) Premier chargement (jour actuel affiché au démarrage)
-    refreshNotesUIForDay(jourAffiche);
-
-// =========== NOTES fin =================
 
 
 
