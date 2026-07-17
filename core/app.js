@@ -1684,7 +1684,7 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
           dayElement.classList.add('upcoming'); // Gris
         }
 
-        dayElement.addEventListener('click', () => afficherDefiDuJour(jour, { focusNote: true }));
+        dayElement.addEventListener('click', () => afficherDefiDuJour(jour));
         calendarGrid.appendChild(dayElement);
       }
       centrerCalendrierSurJour(jourActuel);
