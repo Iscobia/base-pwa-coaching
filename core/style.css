@@ -968,7 +968,7 @@ body {
 .notes-journal {
   display: grid;
   gap: 0;
-  max-height: min(68vh, 720px);
+  max-height: min(68vh, 320px);
   overflow-y: auto;
   padding-right: 8px;
   scroll-behavior: smooth;
