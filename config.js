@@ -23,7 +23,7 @@ window.DEFAULT_APP_ID = "fondation";
 window.TECH_SUPPORT_EMAIL = "contact@sekhamet.com";
 
 // Ordre de progression par défault
-window.PROGRAM_FLOW = ["fondation","origine","enveloppe","emergence","envol"];
+window.PROGRAM_FLOW = ["fondation","origine","enveloppe","emergence","envol","reset"];
 
 // OneSignal : laisser sur false tant que tu veux seulement les notifs natives
 window.ENABLE_ONESIGNAL = false;

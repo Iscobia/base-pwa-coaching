@@ -1,8 +1,6 @@
 (function () {
 // app.js - Logique principale de l'application
 
-const userAgent = navigator.userAgent;
-
 // Config par app (chargée via config.js dans chaque repo enfant)
 const APP = window.APP_CONFIG || {};
 const APP_ID = APP.ID || "app";
@@ -268,11 +266,19 @@ function renderProgramSelector() {
       <span class="program-chip-subtitle">${program.subtitle}</span>
     `;
 
-    button.addEventListener("click", () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set("app", program.id);
-      window.location.href = url.toString();
-    });
+    bbutton.addEventListener("click", () => {
+        const url = new URL(window.location.href);
+
+        url.searchParams.set("app", program.id);
+
+        /*
+         * Signale qu’il s’agit d’un véritable choix volontaire.
+         * Ce marqueur sera retiré après le chargement.
+         */
+        url.searchParams.set("manual", "1");
+
+        window.location.href = url.toString();
+      });
 
     container.appendChild(button);
   });
@@ -344,36 +350,96 @@ function updateProgramCompleteOverlay() {
 function getRecommendedFlowAppId() {
   const flow = getProgramFlow();
 
-  if (!flow.length) return window.DEFAULT_APP_ID || window.APP_ID;
+  /*
+   * Aucun parcours multiple disponible :
+   * on conserve le programme actuellement chargé.
+   */
+  if (!flow.length) {
+    return window.APP_ID;
+  }
 
+  /*
+   * On cherche le premier programme encore inachevé
+   * dans l’ordre défini par PROGRAM_FLOW.
+   */
   for (const appId of flow) {
     if (!isProgramCompleted(appId)) {
       return appId;
     }
   }
 
-  return window.DEFAULT_APP_ID || flow[0] || window.APP_ID;
+  /*
+   * Tous les programmes sont terminés :
+   * aucune redirection automatique.
+   * L’utilisateur reste sur le dernier programme visité.
+   */
+  return null;
 }
 
 function ensureRecommendedFlowAppSelection() {
-  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
+  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS)
+    ? window.ALLOWED_APP_IDS
+    : [window.APP_ID];
 
-  if (allowedIds.length <= 1) return false;
+  /*
+   * Une application ne proposant qu’un seul programme
+   * n’a pas besoin de redirection automatique.
+   */
+  if (allowedIds.length <= 1) {
+    return false;
+  }
 
   const url = new URL(window.location.href);
-  const explicitApp = url.searchParams.get("app");
 
-  // Si l'utilisateur a explicitement choisi une page, on respecte son choix
-  if (explicitApp) return false;
+  /*
+   * Ce marqueur est ajouté uniquement lorsqu’un utilisateur
+   * clique volontairement sur une puce de programme.
+   */
+  const manualSelection =
+    url.searchParams.get('manual') === '1';
 
-  const recommendedAppId = getRecommendedFlowAppId();
+  if (manualSelection) {
+    /*
+     * On respecte le choix pour ce chargement,
+     * puis on retire le marqueur de l’adresse.
+     */
+    url.searchParams.delete('manual');
 
-  if (!recommendedAppId || recommendedAppId === window.APP_ID) return false;
+    window.history.replaceState(
+      {},
+      '',
+      url.toString()
+    );
 
-  url.searchParams.set("app", recommendedAppId);
-  window.location.replace(url.toString());
+    return false;
+  }
+
+  const recommendedAppId =
+    getRecommendedFlowAppId();
+
+  /*
+   * null : tout le parcours est terminé.
+   * APP_ID actuel : nous sommes déjà sur le bon programme.
+   */
+  if (
+    !recommendedAppId ||
+    recommendedAppId === window.APP_ID
+  ) {
+    return false;
+  }
+
+  url.searchParams.set(
+    'app',
+    recommendedAppId
+  );
+
+  window.location.replace(
+    url.toString()
+  );
+
   return true;
 }
+
 
 
 
