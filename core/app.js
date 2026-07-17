@@ -836,58 +836,88 @@ function waitForOneSignal(maxSeconds = 5) {
 // ========== DEBUG SIMPLIFIÉ ONESIGNAL ==========
 function debugOneSignal() {
   console.log('🔍 [DEBUG] Vérification OneSignal...');
-  const OneSignal = window.OneSignalGlobal;
-  
+
   setTimeout(async () => {
     console.log('=== DEBUG ONESIGNAL ===');
-    
+
     try {
-      // Vérifier si OneSignal est chargé
-      if (typeof OneSignal !== 'undefined') {
-        console.log('✅ OneSignal chargé');
-        console.log('Version SDK:', OneSignal.VERSION || 'Inconnue');
-        
-        // Vérifier l'initialisation
-        if (OneSignal.config && OneSignal.config.appId) {
-          console.log('✅ App ID configuré:', OneSignal.config.appId);
-          
-          // Vérifier l'abonnement
-          try {
-            if (OneSignal.User && OneSignal.User.PushSubscription) {
-              const isSubscribed = Notification.permission === "granted";
-              console.log('🔔 Abonnement actif:', isSubscribed);
-              
-              if (isSubscribed) {
-                console.log('🎉 Prêt pour les notifications push !');
-              }
-            }
-          } catch (e) {
-            console.log('⚠️ Impossible de vérifier abonnement:', e.message);
-          }
-        } else {
-          console.log('⚠️ OneSignal pas encore initialisé');
+      /*
+       * On lit OneSignal après les 4 secondes d’attente.
+       * Sinon la constante pourrait conserver la valeur null
+       * capturée avant le chargement du SDK.
+       */
+      const OneSignal = window.OneSignalGlobal;
+
+      if (!OneSignal) {
+        console.log('❌ OneSignal non détecté');
+        console.log('Causes possibles :');
+        console.log('1. OneSignal est désactivé dans config.js');
+        console.log('2. Le SDK n’a pas encore fini de charger');
+        console.log('3. Un bloqueur de scripts empêche son chargement');
+        console.log('4. Firefox bloque le CDN avec sa protection renforcée');
+
+        if (/Firefox/i.test(navigator.userAgent)) {
+          console.log(
+            '💡 Firefox : vérifie la protection renforcée contre le pistage.'
+          );
+        }
+
+        return;
+      }
+
+      console.log('✅ OneSignal chargé');
+      console.log(
+        'Version SDK :',
+        OneSignal.VERSION || 'Non communiquée par le SDK'
+      );
+
+      if (OneSignal.config?.appId) {
+        console.log(
+          '✅ App ID configuré :',
+          OneSignal.config.appId
+        );
+      } else {
+        console.log(
+          '⚠️ L’App ID n’est pas accessible depuis cet objet OneSignal.'
+        );
+      }
+
+      const pushSubscription =
+        OneSignal.User?.PushSubscription;
+
+      if (pushSubscription) {
+        const isSubscribed =
+          Notification.permission === 'granted';
+
+        console.log(
+          '🔔 Autorisation navigateur :',
+          Notification.permission
+        );
+
+        console.log(
+          '🔔 Abonnement considéré actif :',
+          isSubscribed
+        );
+
+        if (isSubscribed) {
+          console.log(
+            '🎉 Le navigateur autorise les notifications.'
+          );
         }
       } else {
-        console.log('❌ OneSignal non détecté');
-        console.log('Causes possibles:');
-        console.log('1. Bloqueur de scripts (uBlock, AdBlock)');
-        console.log('2. Firefox avec protection renforcée');
-        console.log('3. Connexion lente au CDN');
-        
-        // Suggestion
-
-        
-          
-        if (/Firefox/i.test(navigator.userAgent)) {
-          console.log('💡 Firefox: Désactivez "Protection renforcée" temporairement');
-        }
+        console.log(
+          '⚠️ PushSubscription n’est pas encore disponible.'
+        );
       }
     } catch (error) {
-      console.error('❌ Erreur debug:', error);
+      console.error(
+        '❌ Erreur debug OneSignal :',
+        error
+      );
+    } finally {
+      console.log('=== FIN DEBUG ===');
     }
-    
-    console.log('=== FIN DEBUG ===');
-  }, 4000); // Attendre 4 secondes
+  }, 4000);
 }
 
 
