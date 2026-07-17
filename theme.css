@@ -76,7 +76,7 @@
   --tech-button-fond-marbre: linear-gradient(165deg, #fafafa 0%, #f3f3f3 100%);
   --tech-button-texte-marbre: #4a4a4a;
   --tech-button-bordure-marbre: #777777;
-  --tech-cache-fond-marbre: --tech-cache-fond-basalte: linear-gradient(135deg, #b66d32 0%,  #a96025 10%, #e49c62 35%, #d07c38 45%, #a96025 70%, #704019 100%);
+  --tech-cache-fond-marbre: linear-gradient(135deg, #b66d32 0%,  #a96025 10%, #e49c62 35%, #d07c38 45%, #a96025 70%, #704019 100%);
   --tech-cache-texte-marbre: #ffffff;
   --tech-info-fond-marbre: rgba(255,255,255,.18);
   --tech-info-bordure-marbre: rgba(199,121,45,.34);
@@ -90,7 +90,7 @@
   --tech-button-fond-basalte: linear-gradient(160deg, #252525 0%, #0c0c0c 100%);
   --tech-button-texte-basalte: #f4f1ec;
   --tech-button-bordure-basalte: #65676a;
-  --tech-cache-fond-basalte: --tech-cache-fond-basalte: linear-gradient(135deg, #b66d32 0%,  #a96025 10%, #e49c62 35%, #d07c38 45%, #a96025 70%, #704019 100%);
+  --tech-cache-fond-basalte: linear-gradient(135deg, #b66d32 0%,  #a96025 10%, #e49c62 35%, #d07c38 45%, #a96025 70%, #704019 100%);
   --tech-cache-texte-basalte: #ffffff;
   --tech-info-fond-basalte: rgba(255,255,255,.035);
   --tech-info-bordure-basalte: rgba(201,178,143,.30);
