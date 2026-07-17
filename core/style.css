@@ -1311,7 +1311,7 @@ body {
   }
 
   .notes-journal {
-    max-height: 66vh;
+    max-height: 360px;
     padding-right: 4px;
   }
 
