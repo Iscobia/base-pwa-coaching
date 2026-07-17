@@ -266,7 +266,7 @@ function renderProgramSelector() {
       <span class="program-chip-subtitle">${program.subtitle}</span>
     `;
 
-    bbutton.addEventListener("click", () => {
+    button.addEventListener("click", () => {
         const url = new URL(window.location.href);
 
         url.searchParams.set("app", program.id);
