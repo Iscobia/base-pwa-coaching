@@ -403,7 +403,7 @@ body {
 
 .systeme-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 25px rgba(100, 100, 100, 0.4);
 }
 
 .separator {margin:20px,auto,20px,auto;opacity:0.5;width:40%;}
@@ -1105,7 +1105,7 @@ body {
   width: 100%;
   margin: 8px 0 30px;
   padding: 13px 18px;
-  border: 3px double #1e1e1e;
+  border: 3px double var(tech-cache-border);
   border-radius: var(--radius-net);
   background: var(--tech-cache-fond);
   color: var(--tech-cache-texte);
