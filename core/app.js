@@ -708,26 +708,29 @@ console.log("DEFIS LOADED:", window.DEFIS?.length);
 
 // ========== FONCTIONS GÉRANT ONESIGNAL ==========
 
-// Fonction sécurisée pour accéder à OneSignal - AMÉLIORÉE
+// Fonction sécurisée pour accéder à OneSignal
 function safeOneSignal() {
-    const OneSignal = window.OneSignalGlobal;
+  const OneSignal = window.OneSignalGlobal;
 
-    if (typeof OneSignal !== 'undefined' && OneSignal) {
-        return OneSignal;
-    }
-    console.warn('[OneSignal] Pas encore chargé');
-    return null;
+  if (OneSignal) {
+    return OneSignal;
+  }
+
+  return null;
 }
 
 // Fonction pour attendre OneSignal SANS ERREUR
 function waitForOneSignal(maxSeconds = 5) {
   return new Promise((resolve) => {
-    const immediatelyAvailable = safeOneSignal();
+    const alreadyAvailable = safeOneSignal();
 
-    if (immediatelyAvailable) {
-      resolve(immediatelyAvailable);
+    if (alreadyAvailable) {
+      console.log('[OneSignal] Déjà chargé');
+      resolve(alreadyAvailable);
       return;
     }
+
+    console.log('[OneSignal] Attente du chargement...');
 
     let attempts = 0;
     const maxAttempts = maxSeconds * 10;
@@ -735,21 +738,32 @@ function waitForOneSignal(maxSeconds = 5) {
     const interval = setInterval(() => {
       attempts += 1;
 
-      const oneSignal = safeOneSignal();
+      const OneSignal = safeOneSignal();
 
-      if (oneSignal) {
+      if (OneSignal) {
         clearInterval(interval);
-        resolve(oneSignal);
+
+        console.log(
+          `[OneSignal] Chargé après ${attempts / 10} s`
+        );
+
+        resolve(OneSignal);
         return;
       }
 
       if (attempts >= maxAttempts) {
         clearInterval(interval);
+
+        console.warn(
+          `[OneSignal] Non chargé après ${maxSeconds} s`
+        );
+
         resolve(null);
       }
     }, 100);
   });
 }
+
 
 
 
@@ -862,58 +876,58 @@ function showInstallOverlay() {
 }
 
 async function checkNotificationPermission() {
-  const OneSignal = window.OneSignalGlobal;
-
   try {
-    // Attendre que OneSignal soit disponible
-    await new Promise(resolve => {
-      if (typeof OneSignal !== 'undefined') {
-        resolve();
-        return;
-      }
-      
-      // Vérifier toutes les 100ms pendant 5 secondes
-      let attempts = 0;
-      const check = setInterval(() => {
-        attempts++;
-        if (typeof OneSignal !== 'undefined') {
-          clearInterval(check);
-          resolve();
-        }
-        if (attempts > 50) { // 5 secondes
-          clearInterval(check);
-          resolve();
-        }
-      }, 100);
-    });
-    
-    // Si OneSignal est disponible, l'utiliser
-    if (typeof OneSignal !== 'undefined') {
+    const OneSignal = await waitForOneSignal(5);
+
+    if (OneSignal) {
       try {
-        // Ancienne méthode
-        if (typeof OneSignal.isPushNotificationsEnabled === 'function') {
-          const isSubscribed = await OneSignal.isPushNotificationsEnabled();
-          return isSubscribed ? 'granted' : 'default';
+        /*
+         * Ancienne API OneSignal.
+         */
+        if (
+          typeof OneSignal.isPushNotificationsEnabled === 'function'
+        ) {
+          const isSubscribed =
+            await OneSignal.isPushNotificationsEnabled();
+
+          return isSubscribed
+            ? 'granted'
+            : 'default';
         }
-        // Nouvelle méthode
-        if (OneSignal.User && OneSignal.User.PushSubscription) {
-          const subscription = OneSignal.User.PushSubscription;
-          return subscription.optIn ? 'granted' : 'denied';
+
+        /*
+         * API OneSignal récente.
+         */
+        const pushSubscription =
+          OneSignal.User?.PushSubscription;
+
+        if (pushSubscription) {
+          return pushSubscription.optIn
+            ? 'granted'
+            : 'denied';
         }
-      } catch (e) {
-        console.warn('Erreur OneSignal API:', e);
+      } catch (error) {
+        console.warn(
+          'Erreur pendant la lecture de OneSignal :',
+          error
+        );
       }
     }
-    
-    // Fallback: Notification API native
+
+    /*
+     * Fallback natif si OneSignal n’est pas disponible.
+     */
     if ('Notification' in window) {
       return Notification.permission;
     }
-    
+
     return 'unsupported';
-    
   } catch (error) {
-    console.warn('Erreur vérification permission:', error);
+    console.warn(
+      'Erreur pendant la vérification des permissions :',
+      error
+    );
+
     return 'unsupported';
   }
 }
@@ -1774,60 +1788,160 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
 
 
       // 5. IMPORTER SAUVEGARDE
-      document.getElementById('import-backup-btn')?.addEventListener('click', function() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.onchange = function(e) {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            try {
-              const backupData = JSON.parse(event.target.result);
-              if (backupData.appId && backupData.appId !== APP_ID) {
-                alert(`⚠️ Cette sauvegarde appartient au programme ${backupData.appId}, pas à ${APP_ID}.`);
-                return;
-              }
-              if (!backupData.progression || !backupData.jourActuel) throw new Error('Format invalide');
-              if (confirm(`Importer la sauvegarde du ${new Date(backupData.timestamp).toLocaleDateString('fr-FR')} ?`)) {
-              lsSet('defis_progression', JSON.stringify(backupData.progression));
-              lsSet('jour_actuel', backupData.jourActuel);
-              if (backupData.dernierChangement) lsSet('dernier_changement_jour', backupData.dernierChangement);
-              if (backupData.heureNotification) lsSet('heure_notification', backupData.heureNotification);
+      document.getElementById('import-backup-btn')?.addEventListener('click', function () {
+      const input = document.createElement('input');
 
-              // ✅ Notes (par jour)
-              if (backupData.notesByDay) {
-                lsSet('notes_by_day', JSON.stringify(backupData.notesByDay));
-              } else if (backupData.notes) {
-                // Compatibilité ancienne sauvegarde "notes"
-                // Si c'était une string -> on la met sur le jourActuel importé
-                if (typeof backupData.notes === 'string') {
-                  const day = String(backupData.jourActuel || 1);
-                  lsSet('notes_by_day', JSON.stringify({ [day]: backupData.notes }));
-                } else if (typeof backupData.notes === 'object') {
-                  // Si c'était déjà un map -> on le reprend tel quel
-                  lsRemove('notes_by_day');
-                }
-              } else {
-                lsRemove('notes_by_day');
-              }
+      input.type = 'file';
+      input.accept = '.json';
 
-              // (Optionnel) on supprime l’ancienne clé si tu veux éviter la confusion
-              lsRemove('notes');
+      input.onchange = function (event) {
+        const file = event.target?.files?.[0];
 
-              alert('✅ Progression importée !');
-              window.location.reload();
-              }
-            } catch (error) {
-              console.error('Erreur import:', error);
-              alert('❌ Fichier invalide.');
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (loadEvent) {
+          try {
+            const result = loadEvent.target?.result;
+
+            /*
+             * FileReader.result peut théoriquement être :
+             * - une chaîne de caractères ;
+             * - un ArrayBuffer ;
+             * - null.
+             *
+             * Comme readAsText() doit nous fournir du texte,
+             * on vérifie clairement le type avant JSON.parse().
+             */
+            if (typeof result !== 'string') {
+              throw new Error(
+                'Le fichier importé ne contient pas de texte lisible.'
+              );
             }
-          };
-          reader.readAsText(file);
+
+            const backupData = JSON.parse(result);
+
+            if (backupData.appId && backupData.appId !== APP_ID) {
+              alert(
+                `⚠️ Cette sauvegarde appartient au programme ` +
+                `${backupData.appId}, pas à ${APP_ID}.`
+              );
+              return;
+            }
+
+            if (!backupData.progression || !backupData.jourActuel) {
+              throw new Error('Format de sauvegarde invalide.');
+            }
+
+            const dateSauvegarde = backupData.timestamp
+              ? new Date(backupData.timestamp).toLocaleDateString('fr-FR')
+              : 'date inconnue';
+
+            const confirmation = confirm(
+              `Importer la sauvegarde du ${dateSauvegarde} ?`
+            );
+
+            if (!confirmation) return;
+
+            lsSet(
+              'defis_progression',
+              JSON.stringify(backupData.progression)
+            );
+
+            lsSet(
+              'jour_actuel',
+              String(backupData.jourActuel)
+            );
+
+            if (backupData.dernierChangement) {
+              lsSet(
+                'dernier_changement_jour',
+                backupData.dernierChangement
+              );
+            }
+
+            if (backupData.heureNotification) {
+              lsSet(
+                'heure_notification',
+                backupData.heureNotification
+              );
+            }
+
+            /*
+             * Notes au nouveau format :
+             * {
+             *   "1": "Ma note...",
+             *   "2": "Une autre note..."
+             * }
+             */
+            if (
+              backupData.notesByDay &&
+              typeof backupData.notesByDay === 'object'
+            ) {
+              lsSet(
+                'notes_by_day',
+                JSON.stringify(backupData.notesByDay)
+              );
+            } else if (typeof backupData.notes === 'string') {
+              /*
+               * Ancien format :
+               * une seule chaîne de texte.
+               *
+               * On la rattache au jour importé.
+               */
+              const day = String(backupData.jourActuel || 1);
+
+              lsSet(
+                'notes_by_day',
+                JSON.stringify({
+                  [day]: backupData.notes
+                })
+              );
+            } else if (
+              backupData.notes &&
+              typeof backupData.notes === 'object'
+            ) {
+              /*
+               * Ancienne sauvegarde qui contiendrait déjà
+               * un objet de notes.
+               */
+              lsSet(
+                'notes_by_day',
+                JSON.stringify(backupData.notes)
+              );
+            } else {
+              lsSet(
+                'notes_by_day',
+                JSON.stringify({})
+              );
+            }
+
+            // Suppression de l’ancienne clé après migration.
+            lsRemove('notes');
+
+            alert('✅ Progression importée !');
+            window.location.reload();
+          } catch (error) {
+            console.error('Erreur import :', error);
+            alert('❌ Fichier de sauvegarde invalide.');
+          }
         };
-        input.click();
-      });
+
+        reader.onerror = function () {
+          console.error(
+            'Erreur pendant la lecture du fichier :',
+            reader.error
+          );
+
+          alert('❌ Le fichier n’a pas pu être lu.');
+        };
+
+        reader.readAsText(file);
+      };
+
+      input.click();
+    });
 
       // 6. SUPPRIMER PROGRESSION
       document.getElementById('reset-progress-btn')?.addEventListener('click', function() {
