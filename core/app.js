@@ -2,7 +2,6 @@
 // app.js - Logique principale de l'application
 
 const userAgent = navigator.userAgent;
-const isSafari = /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent);
 
 // Config par app (chargée via config.js dans chaque repo enfant)
 const APP = window.APP_CONFIG || {};
@@ -11,7 +10,6 @@ const APP_NAME = APP.NAME || "APP";
 const APP_MAIN_TITLE = APP.MAIN_TITLE || "Mon Défi Quotidien";
 const APP_BROWSER_TITLE = APP.BROWSER_TITLE || `${APP_NAME} - Défi Quotidien`;
 const APP_ICON_192 = APP.ICON_192 || "./core/assets/icons/default-192.png";
-const APP_ICON_512 = APP.ICON_512 || "./core/assets/icons/default-512.png";
 const APP_SUPPORT_URL = APP.SUPPORT_URL || "#";
 const TECH_SUPPORT_EMAIL = window.TECH_SUPPORT_EMAIL || "";
 
@@ -23,7 +21,8 @@ console.log("APP_NAME:", APP_NAME);
 console.log("DEFIS LOADED:", window.DEFIS?.length);
 
 // Cache name isolé par app (utile surtout pour Service Worker / caches)
-const CACHE_NAME = APP.CACHE_NAME || `${APP_ID}-pwa-v1`;
+// /!\ ATTENTION DOUBLON ? Semble inutilisé
+//const CACHE_NAME = APP.CACHE_NAME || `${APP_ID}-pwa-v1`;
 
 // Stockage isolé par app
 const STORAGE_PREFIX = APP.STORAGE_PREFIX || `${APP_ID}_`;
@@ -640,7 +639,11 @@ async function showDailyWakeNotificationIfNeededForApp(appId) {
         data: {
           jour: String(jourActuel),
           url: targetUrl
-        }
+        },
+        actions: [
+          { action: 'view', title: '👁️ Voir' },
+          { action: 'mark-done', title: '✅ Marquer comme accompli' }
+        ],
       });
     } else {
       console.warn(`⚠️ SW non prêt pour ${appId}, notif wake ignorée pour éviter une notif Chrome`);
@@ -707,6 +710,8 @@ console.log("DEFIS LOADED:", window.DEFIS?.length);
 
 // Fonction sécurisée pour accéder à OneSignal - AMÉLIORÉE
 function safeOneSignal() {
+    const OneSignal = window.OneSignalGlobal;
+
     if (typeof OneSignal !== 'undefined' && OneSignal) {
         return OneSignal;
     }
@@ -716,38 +721,34 @@ function safeOneSignal() {
 
 // Fonction pour attendre OneSignal SANS ERREUR
 function waitForOneSignal(maxSeconds = 5) {
-    return new Promise((resolve) => {
-        // Si déjà disponible
-        if (typeof OneSignal !== 'undefined' && OneSignal) {
-            console.log('[OneSignal] Déjà chargé');
-            resolve(OneSignal);
-            return;
-        }
-        
-        console.log('[OneSignal] Attente du chargement...');
-        
-        // Vérifier toutes les 100ms
-        let attempts = 0;
-        const maxAttempts = maxSeconds * 10; // 10 vérifications par seconde
-        
-        const interval = setInterval(() => {
-            attempts++;
-            
-            if (typeof OneSignal !== 'undefined' && OneSignal) {
-                clearInterval(interval);
-                console.log(`[OneSignal] Chargé après ${attempts/10}s`);
-                resolve(OneSignal);
-                return;
-            }
-            
-            // Timeout après maxSeconds
-            if (attempts >= maxAttempts) {
-                clearInterval(interval);
-                console.warn(`[OneSignal] Non chargé après ${maxSeconds}s`);
-                resolve(null); // Retourne null au lieu de planter
-            }
-        }, 100);
-    });
+  return new Promise((resolve) => {
+    const immediatelyAvailable = safeOneSignal();
+
+    if (immediatelyAvailable) {
+      resolve(immediatelyAvailable);
+      return;
+    }
+
+    let attempts = 0;
+    const maxAttempts = maxSeconds * 10;
+
+    const interval = setInterval(() => {
+      attempts += 1;
+
+      const oneSignal = safeOneSignal();
+
+      if (oneSignal) {
+        clearInterval(interval);
+        resolve(oneSignal);
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        resolve(null);
+      }
+    }, 100);
+  });
 }
 
 
@@ -755,6 +756,7 @@ function waitForOneSignal(maxSeconds = 5) {
 // ========== DEBUG SIMPLIFIÉ ONESIGNAL ==========
 function debugOneSignal() {
   console.log('🔍 [DEBUG] Vérification OneSignal...');
+  const OneSignal = window.OneSignalGlobal;
   
   setTimeout(async () => {
     console.log('=== DEBUG ONESIGNAL ===');
@@ -860,6 +862,8 @@ function showInstallOverlay() {
 }
 
 async function checkNotificationPermission() {
+  const OneSignal = window.OneSignalGlobal;
+
   try {
     // Attendre que OneSignal soit disponible
     await new Promise(resolve => {
@@ -917,7 +921,6 @@ async function checkNotificationPermission() {
 function detecterAndroidEtNotifications() {
   const androidNotificationSection = document.getElementById('allow-notifications-btn')?.closest('.trouble-item');
   if (androidNotificationSection) {
-    const isAndroid = /Android/i.test(navigator.userAgent);
     const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isiOS) {
       androidNotificationSection.style.display = 'none';
@@ -934,16 +937,6 @@ function detecterAndroidEtNotifications() {
   });
 }
 
-function checkForUpdates() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) {
-        reg.update();
-        setInterval(() => reg.update(), 24 * 60 * 60 * 1000);
-      }
-    });
-  }
-}
 
 
 
@@ -1040,13 +1033,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const markDoneButton = document.getElementById('mark-done-btn');
       const pauseProgressionButton = document.getElementById('pause-progression-btn');
 
-    let notesSaveTimer = null;
-    
-    function setNotesStatus(msg) {
-      if (!notesStatus) return;
-      notesStatus.textContent = msg || '';
-    }
-      
+
       // Synchroniser l'affichage avec l'état global (pas de "let" ici : on utilise le jourAffiche global)
       jourAffiche = jourActuel;
 
@@ -1310,14 +1297,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     return new Date(yyyy, mm - 1, dd, 12, 0, 0);
   }
 
-  // Ici on génère une string de date “canonique” pour comparer
-  function getDateStrFR(date = new Date()) {
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const yyyy = date.getFullYear();
-    return `${dd}/${mm}/${yyyy}`;
-  }
-
   //======FIN de la protection du helper
 
 
@@ -1500,6 +1479,15 @@ function scheduleNoteSave(day, value) {
   notesSaveTimers.set(day, timer);
 }
 
+
+
+function autoResizeNoteTextarea(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+
+
 function createNoteDayElement(day, notes, currentDay, selectedDay) {
   const item = document.createElement('article');
   item.className = 'notes-day';
@@ -1527,10 +1515,12 @@ function createNoteDayElement(day, notes, currentDay, selectedDay) {
   textarea.dataset.noteDayInput = String(day);
   textarea.rows = 2;
   textarea.value = notes[String(day)] || '';
+  requestAnimationFrame(() => autoResizeNoteTextarea(textarea));
   textarea.placeholder = 'Écris ici ce que tu ressens, ce que tu observes, tes prises de conscience…';
   textarea.setAttribute('aria-label', `Note du jour ${day}`);
 
   textarea.addEventListener('input', () => {
+    autoResizeNoteTextarea(textarea);
     scheduleNoteSave(day, textarea.value);
   });
 
@@ -1970,14 +1960,16 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
 
     // Charger le module notifications UNIQUEMENT si OneSignal est disponible
 setTimeout(() => {
-  if (typeof OneSignal !== 'undefined' || typeof window.OneSignalGlobal !== 'undefined') {
-    console.log('🔔 Chargement module notifications...');
+  const oneSignal = window.OneSignalGlobal;
+
+  if (oneSignal) {
+    console.log('🔔 Chargement du module notifications…');
     const script = document.createElement('script');
     // script.src = '/sekhamet-envol/envol-notifications.js';
     script.onload = () => console.log('✅ Module notifications chargé');
     document.head.appendChild(script);
   } else {
-    console.warn('⚠️ OneSignal non disponible - notifications désactivées');
+    console.warn('⚠️ OneSignal non disponible');
   }
 }, 3000);
 

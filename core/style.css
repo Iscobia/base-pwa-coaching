@@ -220,7 +220,6 @@ body {
   color: #065f46;
   cursor: default;
   border: none;
-  -moz-border-radius: 20px 2px 20px 2px / 20px 2px 20px 2px;
   -webkit-border-radius: 20px 2px 20px 2px / 20px 2px 20px 2px;
   -webkit-border-top-left-radius: 30px 30px;
   -webkit-border-top-right-radius: 5px 5px;
@@ -388,7 +387,6 @@ body {
   margin : 5px;
   
   border: none;
-  -moz-border-radius: 20px 2px 20px 2px / 20px 2px 20px 2px;
   -webkit-border-radius: 20px 2px 20px 2px / 20px 2px 20px 2px;
   -webkit-border-top-left-radius: 30px 30px;
   -webkit-border-top-right-radius: 5px 5px;
@@ -406,7 +404,7 @@ body {
   box-shadow: 0 10px 25px rgba(100, 100, 100, 0.4);
 }
 
-.separator {margin:20px,auto,20px,auto;opacity:0.5;width:40%;}
+.separator {margin:20px auto 20px auto;opacity:0.5;width:40%;}
 
 /* ========== RESPONSIVE ========== */
 
@@ -414,7 +412,7 @@ body {
   .app-container {
     padding: 15px;
   }
-  .separator {margin:20px,auto, 20px,auto;opacity:0.5;width:80%;}
+  .separator {margin:20px auto 20px auto;opacity:0.5;width:80%;}
 }
 
   
@@ -485,7 +483,7 @@ body {
 
 
 /* Paragraphes de problèmes techniques : cache, backup, réinitialisation... */
-backup-p {margin: 30px 0 2px 0px;}
+.backup-p {margin: 30px 0 2px 0;}
 
 
 
@@ -1000,7 +998,7 @@ body {
   width: 100%;
   min-height: 64px;
   padding: 11px 12px;
-  resize: vertical;
+  resize: none;
   overflow: hidden;
   border: 1px solid var(--bordure);
   border-radius: var(--radius-net);
@@ -1311,7 +1309,8 @@ body {
   }
 
   .notes-journal {
-    max-height: 360px;
+    //max-height: 40vh; // Signifie que ça prend 40% de la hauteur disponible + la barre supérieure
+    max-height: 40dvh; // Signifie que ça prend uniquement 40% de l'écran réellement utilisé pour montrer l'app
     padding-right: 4px;
   }
 
