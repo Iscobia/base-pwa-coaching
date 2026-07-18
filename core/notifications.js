@@ -399,6 +399,23 @@ console.log('🔍 Boutons trouvés:', {
           // ACTIVER
           // =========================
       
+          if (
+            'Notification' in window &&
+            Notification.permission === 'denied'
+          ) {
+            notifLsSet('notifications_enabled', 'false');
+
+            alert(
+              '🔒 Les notifications sont bloquées dans les paramètres de ton navigateur.\n\n' +
+              'Je ne peux pas rouvrir automatiquement la demande d’autorisation.\n\n' +
+              'Clique sur l’icône à gauche de l’adresse du site, puis autorise les notifications avant de réessayer.'
+            );
+
+            updateToggleButton();
+            return;
+          }
+
+
           // On enregistre l'intention ON tout de suite (le bouton passera ON)
           localStorage.setItem(NOTIF_PREF_KEY, 'true');
       
