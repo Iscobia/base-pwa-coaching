@@ -72,16 +72,38 @@ self.addEventListener('message', (event) => {
     const data = event.data || {};
     if (data.action !== 'SEND_NOTIFICATION') return;
 
-    const { appId, appName, jour, titre, description, isTest, icon, badge, url, tag } = data;
+    const {
+      appId,
+      appName,
+      jour,
+      titre,
+      description,
+      isTest,
+      icon,
+      badge,
+      url,
+      tag
+    } = data;
 
     const notifTitle = isTest
       ? `🎯 ${appName} - Test - Jour ${jour} - ${titre}`
       : `${appName} - Jour ${jour} - ${titre}`;
 
+    // Transforme toujours les chemins reçus en URL absolues.
+    const notificationIcon = new URL(
+      icon || DEFAULT_ICON,
+      self.location.origin
+    ).href;
+
+    const notificationBadge = new URL(
+      badge || icon || DEFAULT_ICON,
+      self.location.origin
+    ).href;
+
     self.registration.showNotification(notifTitle, {
       body: (description || '').substring(0, 240),
-      icon: icon || DEFAULT_ICON,
-      badge: badge || icon || DEFAULT_ICON,
+      icon: notificationIcon,
+      badge: notificationBadge,
       tag: tag || `${appId || 'app'}-jour-${jour}`,
       requireInteraction: true,
       data: { jour: String(jour), url: url || self.location.origin },
