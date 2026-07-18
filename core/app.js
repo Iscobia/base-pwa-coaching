@@ -299,31 +299,30 @@ function getProgramFlow() {
 }
 
 function isProgramCompleted(appId) {
-  const savedRaw = localStorage.getItem(`${appId}_defis_progression`);
+  const defis = window.DEFIS_BY_APP?.[appId];
 
-  if (savedRaw && savedRaw !== 'undefined' && savedRaw !== 'null') {
-    try {
-      const saved = JSON.parse(savedRaw);
-      if (Array.isArray(saved) && saved.length > 0) {
-        return saved.every(defi => defi.termine === true);
-      }
-    } catch (e) {
-      console.warn(`⚠️ Progression invalide ignorée pour ${appId}`, e);
-    }
+  if (!Array.isArray(defis) || !defis.length) {
+    return false;
   }
 
-  const defis = window.DEFIS_BY_APP?.[appId];
-  if (!Array.isArray(defis) || defis.length === 0) return false;
+  const progression = JSON.parse(
+    localStorage.getItem(`${appId}_defis_progression`) || "[]"
+  );
 
-  return defis.every(defi => defi.termine === true);
+  const defisTermines = progression.filter(
+    defi => defi.termine
+  ).length;
+
+  const defisRattrapes = JSON.parse(
+    localStorage.getItem(`${appId}_defis_madeup`) || "[]"
+  ).length;
+
+  return (defisTermines + defisRattrapes) >= defis.length;
 }
 
 
 function isCurrentProgramCompleted() {
-  const defis = window.DEFIS;
-  if (!Array.isArray(defis) || defis.length === 0) return false;
-
-  return defis.every(defi => defi.termine === true);
+  return isProgramCompleted(window.APP_ID);
 }
 
 function updateProgramCompleteOverlay() {
@@ -355,6 +354,11 @@ function getRecommendedFlowAppId() {
    * on conserve le programme actuellement chargé.
    */
   if (!flow.length) {
+    console.log(
+      "[FLOW] Aucun parcours disponible : maintien sur",
+      window.APP_ID
+    );
+
     return window.APP_ID;
   }
 
@@ -363,7 +367,18 @@ function getRecommendedFlowAppId() {
    * dans l’ordre défini par PROGRAM_FLOW.
    */
   for (const appId of flow) {
-    if (!isProgramCompleted(appId)) {
+    const completed = isProgramCompleted(appId);
+
+    console.log(
+      `[FLOW] ${appId} :`,
+      completed ? "terminé" : "incomplet"
+    );
+
+    if (!completed) {
+      console.log(
+        `[FLOW] Programme recommandé : ${appId}`
+      );
+
       return appId;
     }
   }
@@ -373,10 +388,26 @@ function getRecommendedFlowAppId() {
    * aucune redirection automatique.
    * L’utilisateur reste sur le dernier programme visité.
    */
+  console.log(
+    "[FLOW] Tous les programmes disponibles sont terminés"
+  );
+
   return null;
 }
 
+
 function ensureRecommendedFlowAppSelection() {
+  const recommendedAppId = getRecommendedFlowAppId();
+
+  console.log("APP actuelle :", window.APP_ID);
+  console.log("Programme recommandé :", recommendedAppId);
+  console.log("FONDATION terminée :", isProgramCompleted("fondation"));
+  console.log("ORIGINE terminée :", isProgramCompleted("origine"));
+  console.log("ENVELOPPE terminée :", isProgramCompleted("enveloppe"));
+  console.log("EMERGENCE terminée :", isProgramCompleted("emergence"));
+  console.log("ENVOL terminée :", isProgramCompleted("envol"));
+  console.log("RESET terminée :", isProgramCompleted("reset"));
+
   const allowedIds = Array.isArray(window.ALLOWED_APP_IDS)
     ? window.ALLOWED_APP_IDS
     : [window.APP_ID];
@@ -414,9 +445,6 @@ function ensureRecommendedFlowAppSelection() {
     return false;
   }
 
-  const recommendedAppId =
-    getRecommendedFlowAppId();
-
   /*
    * null : tout le parcours est terminé.
    * APP_ID actuel : nous sommes déjà sur le bon programme.
@@ -436,6 +464,8 @@ function ensureRecommendedFlowAppSelection() {
   window.location.replace(
     url.toString()
   );
+
+  console.log("➡️ Redirection vers", recommendedAppId);
 
   return true;
 }
@@ -1725,7 +1755,7 @@ function renderNotesJournal(selectedDay = null, shouldFocus = false) {
       if (challengeDescriptionElement) challengeDescriptionElement.textContent = defi.description;
 // ✅ Mettre à jour le bouton selon l'état du jour affiché
   updateMarkDoneButtonUI(jour);
-  renderNotesJournal(jour, Boolean(options.focusNote));
+  renderNotesJournal(jour);
   // Vérifier s'il faut mettre l'overlay de défis terminés
   updateProgramCompleteOverlay();
 
