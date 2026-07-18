@@ -32,6 +32,7 @@ const urlsToCache = [
 ];
 
 
+
 self.addEventListener('install', (event) => {
   console.log('[SW] Installation');
   event.waitUntil((async () => {
