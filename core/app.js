@@ -1184,63 +1184,135 @@ document.addEventListener('DOMContentLoaded', async function() {
         pauseProgressionButton.dataset.listenerAttached = "true";
 
         pauseProgressionButton.addEventListener('click', function () {
+  const manuallyPaused = isManualProgressPaused();
+  const autoPaused = isFlowAutoPausedForApp(APP_ID);
+  const effectivelyPaused = manuallyPaused || autoPaused;
 
-        const manuallyPaused = isManualProgressPaused();
-        const autoPaused = isFlowAutoPausedForApp(APP_ID);
-        const effectivelyPaused = manuallyPaused || autoPaused;
+  const today = new Date().toLocaleDateString('fr-FR');
 
-        // Si on met manuellement en pause
-        if (!effectivelyPaused) {
-          const jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
+  // =========================
+  // METTRE EN PAUSE
+  // =========================
+  if (!effectivelyPaused) {
+    const currentDay =
+      parseInt(lsGet('jour_actuel', '1'), 10) || 1;
 
-          let wasCompleted = false;
+    const currentChallenge =
+      Array.isArray(window.DEFIS)
+        ? window.DEFIS[currentDay - 1]
+        : null;
 
-          if (window.DEFIS && window.DEFIS[jourActuel - 1]) {
-            wasCompleted = window.DEFIS[jourActuel - 1].termine === true;
-          }
+    const wasCompleted =
+      currentChallenge?.termine === true;
 
-          lsSet('pause_day_was_completed', wasCompleted ? 'true' : 'false');
-          setProgressPaused(true);
-          setFlowOverrideActive(false);
+    lsSet(
+      'pause_day_was_completed',
+      wasCompleted ? 'true' : 'false'
+    );
 
-          updatePauseProgressionButton();
-          alert(`⏸️ La progression ${APP_NAME} est maintenant en pause.`);
-          window.location.reload();
-          return;
-        }
+    lsSet('pause_started_date', today);
 
-        // Si on relance après pause manuelle
-        if (manuallyPaused) {
-          setManualProgressPaused(false);
+    setManualProgressPaused(true);
+    setFlowOverrideActive(false);
 
-          const wasCompleted = lsGet('pause_day_was_completed', 'false') === 'true';
+    updatePauseProgressionButton();
 
-          if (wasCompleted) {
-            let jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
+    alert(
+      `⏸️ La progression ${APP_NAME} est maintenant en pause.`
+    );
 
-            if (window.DEFIS && jourActuel < window.DEFIS.length) {
-              jourActuel = jourActuel + 1;
-              lsSet('jour_actuel', String(jourActuel));
-            }
-          }
+    return;
+  }
 
-          lsRemove('pause_day_was_completed');
+  // =========================
+  // REPRENDRE APRÈS PAUSE MANUELLE
+  // =========================
+  if (manuallyPaused) {
+    const pauseStartedDate =
+      lsGet('pause_started_date', today);
 
-          updatePauseProgressionButton();
-          alert(`▶️ La progression ${APP_NAME} reprend à partir d’aujourd’hui.`);
-          window.location.reload();
-          return;
-        }
+    const wasCompleted =
+      lsGet('pause_day_was_completed', 'false') === 'true';
 
-        // Si on relance malgré une pause automatique du flow
-        if (autoPaused) {
-          setFlowOverrideActive(true);
+    const resumedOnAnotherDay =
+      pauseStartedDate !== today;
 
-          updatePauseProgressionButton();
-          alert(`▶️ La progression ${APP_NAME} reprend malgré l’ordre recommandé du parcours.`);
-          window.location.reload();
-        }
-      });
+    setManualProgressPaused(false);
+
+    /*
+     * Nouveau défi uniquement si :
+     * - le défi était déjà validé avant la pause ;
+     * - au moins un changement de date a eu lieu.
+     */
+    if (wasCompleted && resumedOnAnotherDay) {
+      let currentDay =
+        parseInt(lsGet('jour_actuel', '1'), 10) || 1;
+
+      if (
+        Array.isArray(window.DEFIS) &&
+        currentDay < window.DEFIS.length
+      ) {
+        currentDay += 1;
+
+        lsSet(
+          'jour_actuel',
+          String(currentDay)
+        );
+
+        /*
+         * Empêche verifierEtAvancerJour()
+         * d’ajouter encore les jours écoulés pendant la pause.
+         */
+        lsSet(
+          'dernier_changement_jour',
+          today
+        );
+
+        jourActuel = currentDay;
+        jourAffiche = currentDay;
+      }
+    } else {
+      /*
+       * Même jour ou défi non terminé :
+       * la progression reprend exactement où elle était.
+       */
+      lsSet(
+        'dernier_changement_jour',
+        today
+      );
+    }
+
+    lsRemove('pause_day_was_completed');
+    lsRemove('pause_started_date');
+
+    updatePauseProgressionButton();
+
+    afficherDefiDuJour(jourActuel);
+
+    if (typeof genererCalendrier === 'function') {
+      genererCalendrier();
+    }
+
+    alert(
+      `▶️ La progression ${APP_NAME} reprend à partir d’aujourd’hui.`
+    );
+
+    return;
+  }
+
+  // =========================
+  // FORCER UNE PAUSE AUTOMATIQUE
+  // =========================
+  if (autoPaused) {
+    setFlowOverrideActive(true);
+
+    updatePauseProgressionButton();
+
+    alert(
+      `▶️ La progression ${APP_NAME} reprend malgré l’ordre recommandé du parcours.`
+    );
+  }
+});
       }
 
 

@@ -96,10 +96,12 @@ self.addEventListener('message', (event) => {
       self.location.origin
     ).href;
 
-    const notificationBadge = new URL(
-      badge || icon || DEFAULT_ICON,
-      self.location.origin
-    ).href;
+    const notificationBadge = badge
+      ? new URL(
+          badge,
+          self.location.origin
+        ).href
+      : undefined;
 
     self.registration.showNotification(notifTitle, {
       body: (description || '').substring(0, 240),

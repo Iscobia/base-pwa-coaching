@@ -12,6 +12,15 @@ const APP_ICON_512 = APP.ICON_512 || APP_ICON_192;
 const NOTIF_PREF_KEY = `${STORAGE_PREFIX}notifications_enabled`;
 const ENABLE_ONESIGNAL = window.ENABLE_ONESIGNAL === true;
 
+const allowedAppIds =
+  Array.isArray(window.ALLOWED_APP_IDS)
+    ? window.ALLOWED_APP_IDS
+    : [APP_ID];
+
+const hasMultiplePrograms =
+  allowedAppIds.length > 1;
+
+
 function notifLsGet(key, fallback = null) {
   const value = localStorage.getItem(`${STORAGE_PREFIX}${key}`);
   return value !== null ? value : fallback;
@@ -827,8 +836,19 @@ async function envoyerNotificationDuJour(isTest = false) {
         titre: defi.titre,
         description: defi.description,
         isTest: isTestMode,
+        /* Application multi-programmes :
+        * - icône du programme
+        * - badge de l’application
+        *
+        * Application mono-programme :
+        * - une seule icône
+        */
+
         icon: APP_ICON_192,
-        badge: notificationBadge,
+        badge: hasMultiplePrograms
+          ? notificationBadge
+          : undefined,
+        
         url: window.location.href,
         tag: `${APP_ID}-jour-${jourActuel}`
       });
