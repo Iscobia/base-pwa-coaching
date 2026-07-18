@@ -125,36 +125,40 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  try {
-    const action = event.action;
-    const data = event.notification.data || {};
-    event.notification.close();
+  const action = event.action || 'view';
+  const data = event.notification.data || {};
+  const appUrl = data.url || self.location.origin;
 
-    const appUrl = data.url || self.location.origin;
+  event.notification.close();
 
-    event.waitUntil((async () => {
-      const list = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+  event.waitUntil((async () => {
+    const windowClients = await clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    });
 
-      if (action === 'mark-done') {
-        list.forEach((client) => {
-          client.postMessage({
-            action: 'MARK_DONE',
-            jour: data.jour
-          });
+    if (action === 'mark-done') {
+      windowClients.forEach((client) => {
+        client.postMessage({
+          action: 'MARK_DONE',
+          jour: data.jour
         });
-      }
+      });
 
-      const matchingClient = list.find((client) => client.url === appUrl);
+      return;
+    }
 
-      if (matchingClient) {
-        await matchingClient.focus();
-        return;
-      }
+    const matchingClient = windowClients.find((client) => {
+      return client.url === appUrl;
+    });
 
-      await clients.openWindow(appUrl);
-    })());
+    if (matchingClient) {
+      await matchingClient.focus();
+      return;
+    }
 
-  } catch (e) {
-    console.error('[SW] Erreur notificationclick:', e);
-  }
+    await clients.openWindow(appUrl);
+  })().catch((error) => {
+    console.error('[SW] Erreur notificationclick:', error);
+  }));
 });
