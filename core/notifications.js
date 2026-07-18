@@ -795,6 +795,11 @@ async function envoyerNotificationDuJour(isTest = false) {
     const isTestMode = isTest === true;
     
     const reg = ('serviceWorker' in navigator) ? await navigator.serviceWorker.ready.catch(() => null) : null;
+    const notificationBadge =
+    window.ALLOWED_APP_IDS?.length > 1
+    ? "./core/assets/icons/EVOLUTION-192.png"
+    : APP_ICON_192;
+
 
     if (reg?.active) {
       reg.active.postMessage({
@@ -806,7 +811,7 @@ async function envoyerNotificationDuJour(isTest = false) {
         description: defi.description,
         isTest: isTestMode,
         icon: APP_ICON_192,
-        badge: APP_ICON_192,
+        badge: notificationBadge,
         url: window.location.href,
         tag: `${APP_ID}-jour-${jourActuel}`
       });
