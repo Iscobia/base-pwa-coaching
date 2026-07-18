@@ -848,7 +848,7 @@ async function envoyerNotificationDuJour(isTest = false) {
         badge: hasMultiplePrograms
           ? notificationBadge
           : undefined,
-        
+
         url: window.location.href,
         tag: `${APP_ID}-jour-${jourActuel}`
       });
@@ -856,17 +856,25 @@ async function envoyerNotificationDuJour(isTest = false) {
       console.log('✅ Notification quotidienne envoyée via Service Worker');
 
     } else {
+      console.warn(
+    `⚠️ [Notification ${APP_NAME}] Service Worker indisponible : notification ignorée pour éviter une notification Chrome simplifiée.`
+        );
+        return;
+
       // NOTIFICATION DE TEST avec plus d'options
-      const options = {
-        body: `Jour ${jourActuel}: ${defi.titre}\n\n${defi.description.substring(0, 100)}...`,
-        icon: APP_ICON_192,
-        tag: `test-${Date.now()}`,
-        requireInteraction: true,
-        data: {
-          jour: jourActuel,
-          url: window.location.href,
-          type: 'test'
-        }
+      // était écrit juste après } else { :
+      // suspecté de générer une notif Chrome non souhaitée sur l'app
+
+      //const options = {
+      //  body: `Jour ${jourActuel}: ${defi.titre}\n\n${defi.description.substring(0, 100)}...`,
+      //  icon: APP_ICON_192,
+      //  tag: `test-${Date.now()}`,
+      //  requireInteraction: true,
+      //  data: {
+      //    jour: jourActuel,
+      //    url: window.location.href,
+      //    type: 'test'
+      //  }
       };
       
       const notification = new Notification(

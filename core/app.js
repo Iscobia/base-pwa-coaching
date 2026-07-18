@@ -2391,13 +2391,13 @@ setTimeout(() => {
           return true;
         }
     
-        // Dernier fallback: Notification directe
-        new Notification((APP.NOTIF_TITLE || `${APP_NAME} — Défi du jour`), {
-          body: "Ton défi du jour t’attend ✨",
-          tag: "envol-daily"
-        });
-        lsSet('last_daily_notif_shown', today);
-        return true;
+        // Dernier fallback: Console
+        console.warn(
+          `⚠️ [Notification ${APP_NAME}] Service Worker indisponible : notification wake ignorée pour éviter une notification Chrome simplifiée.`
+        );
+
+        lsRemove(lockKey);
+        return false;
       } catch (e) {
         // si échec -> on retire le lock pour retenter au prochain wake
         lsRemove(lockKey);
