@@ -36,17 +36,13 @@ function isProgressPaused() {
 
 
 // Attendre que le DOM soit chargé
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log('🔔 [Notifications] DOM chargé, initialisation...');
 
-  // Initialiser après un délai pour laisser OneSignal se charger,
-  // mais ne pas forcément attendre de réponse (si OneSignal n'est pas chargé/activé)
-  // => c'est ce que fait `void`
   setTimeout(() => {
-  void updateToggleButton();
-}, 300);
+    void initEnvolNotifications();
+  }, 300);
 });
-
 
 
 
