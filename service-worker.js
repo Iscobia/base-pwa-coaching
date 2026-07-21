@@ -181,12 +181,18 @@ self.addEventListener('notificationclick', (event) => {
       });
 
       if (targetClient) {
-        targetClient.postMessage({
+        // 1. Ramener d’abord l’application au premier plan
+        const focusedClient = await targetClient.focus();
+
+        // 2. Laisser brièvement le navigateur rendre la page visible
+        await new Promise((resolve) => setTimeout(resolve, 150));
+
+        // 3. Demander ensuite l’affichage du défi et le défilement
+        (focusedClient || targetClient).postMessage({
           action: 'VIEW_CHALLENGE',
           jour: data.jour
         });
 
-        await targetClient.focus();
         return;
       }
 
@@ -196,7 +202,7 @@ self.addEventListener('notificationclick', (event) => {
 
     // Sécurité : une action inconnue ne valide jamais le défi
     console.warn('[SW] Action de notification inconnue :', action);
-  })().catch((error) => {
-    console.error('[SW] Erreur notificationclick:', error);
-  }));
-});
+      })().catch((error) => {
+        console.error('[SW] Erreur notificationclick:', error);
+      }));
+    });
