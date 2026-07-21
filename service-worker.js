@@ -166,7 +166,7 @@ self.addEventListener('notificationclick', (event) => {
           action: 'OPEN_NOTIFICATION_SETTINGS'
         });
 
-        await targetClient.focus();
+        await clients.openWindow(appUrl);
         return;
       }
 
@@ -180,15 +180,32 @@ self.addEventListener('notificationclick', (event) => {
         return client.url === appUrl;
       });
 
+      const isAndroid = /Android/i.test(self.navigator.userAgent);
+
       if (targetClient) {
-        // 1. Ramener d’abord l’application au premier plan
-        const focusedClient = await targetClient.focus();
+        let activeClient = targetClient;
 
-        // 2. Laisser brièvement le navigateur rendre la page visible
-        await new Promise((resolve) => setTimeout(resolve, 150));
+        if (isAndroid) {
+          // Sur Android, focus() peut ne pas ramener réellement la PWA au premier plan.
+          // openWindow() est alors utilisé pour ouvrir ou réactiver l’application.
+          const openedClient = await clients.openWindow(appUrl);
 
-        // 3. Demander ensuite l’affichage du défi et le défilement
-        (focusedClient || targetClient).postMessage({
+          if (openedClient) {
+            activeClient = openedClient;
+          }
+        } else {
+          // Sur ordinateur, focus() fonctionne correctement.
+          const focusedClient = await targetClient.focus();
+
+          if (focusedClient) {
+            activeClient = focusedClient;
+          }
+        }
+
+        // Attendre que l’application soit effectivement visible
+        await new Promise((resolve) => setTimeout(resolve, 250));
+
+        activeClient.postMessage({
           action: 'VIEW_CHALLENGE',
           jour: data.jour
         });
@@ -196,6 +213,7 @@ self.addEventListener('notificationclick', (event) => {
         return;
       }
 
+      // Aucune fenêtre existante : ouvrir l’application
       await clients.openWindow(`${appUrl}#challenge`);
       return;
     }
