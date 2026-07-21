@@ -1369,32 +1369,95 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
 
-      // Réception des actions venant du Service Worker (boutons de notification)
-      if ('serviceWorker' in navigator && !window.__envolSWMsgListenerAttached) {
-        window.__envolSWMsgListenerAttached = true;
-      
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          try {
-            const data = event.data || {};
-            if (data.action === 'MARK_DONE') {
-              const jourNotif = parseInt(data.jour, 10);
-              console.log('🔔 [SW->APP] MARK_DONE reçu pour jour:', jourNotif);
-      
-              if (!isNaN(jourNotif)) {
-                // Affiche le bon jour (met à jour jourAffiche)
-                afficherDefiDuJour(jourNotif);
-      
-                // Applique la validation/rattrapage via ton handler existant
-                if (markDoneButton) {
-                  setTimeout(() => markDoneButton.click(), 0);
-                }
-              }
-            }
-          } catch (e) {
-            console.error('❌ Erreur message SW:', e);
+      // Réception des actions venant du Service Worker
+if ('serviceWorker' in navigator && !window.__envolSWMsgListenerAttached) {
+  window.__envolSWMsgListenerAttached = true;
+
+  function afficherDefiDepuisNotification(jour) {
+    const jourNotif = parseInt(jour, 10);
+
+    if (!isNaN(jourNotif)) {
+      afficherDefiDuJour(jourNotif);
+    }
+
+    const challengeContainer = document.querySelector('.challenge-container');
+
+    if (challengeContainer) {
+      challengeContainer.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
+
+  function afficherParametresNotifications() {
+    const troubleshootingSection =
+      document.querySelector('.troubleshooting');
+
+    if (troubleshootingSection) {
+      troubleshootingSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
+
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    try {
+      const data = event.data || {};
+
+      // ✅ Marquer le défi
+      if (data.action === 'MARK_DONE') {
+        const jourNotif = parseInt(data.jour, 10);
+
+        console.log(
+          '🔔 [SW->APP] MARK_DONE reçu pour jour:',
+          jourNotif
+        );
+
+        if (!isNaN(jourNotif)) {
+          afficherDefiDuJour(jourNotif);
+
+          if (markDoneButton) {
+            setTimeout(() => {
+              markDoneButton.click();
+            }, 0);
           }
-        });
+        }
+
+        return;
       }
+
+      // 👁️ Afficher le défi sans le valider
+      if (data.action === 'VIEW_CHALLENGE') {
+        console.log(
+          '🔔 [SW->APP] VIEW_CHALLENGE reçu pour jour:',
+          data.jour
+        );
+
+        afficherDefiDepuisNotification(data.jour);
+        return;
+      }
+
+      // ⚙️ Afficher la section de dépannage
+      if (data.action === 'OPEN_NOTIFICATION_SETTINGS') {
+        console.log(
+          '🔔 [SW->APP] OPEN_NOTIFICATION_SETTINGS reçu'
+        );
+
+        afficherParametresNotifications();
+        return;
+      }
+
+      console.warn(
+        '🔔 [SW->APP] Action inconnue ignorée:',
+        data.action
+      );
+    } catch (e) {
+      console.error('❌ Erreur message SW:', e);
+    }
+  });
+}
 
 
   

@@ -182,7 +182,8 @@ self.addEventListener('notificationclick', (event) => {
 
       if (targetClient) {
         targetClient.postMessage({
-          action: 'VIEW_CHALLENGE'
+          action: 'VIEW_CHALLENGE',
+          jour: data.jour
         });
 
         await targetClient.focus();
