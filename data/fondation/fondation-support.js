@@ -38,8 +38,8 @@ window.FONDATION_SUPPORT = {
           <h1>I - Je fais le point</h1>
 
           <p>
-            Avant de commencer à analyser en détail, je te propose de commencer pas un point très
-            concret sur la qualité de ton environnement : pour chaque question que je t’ai préparé, liste en
+            Avant de commencer à analyser en détail, je te propose de commencer par un point très
+            concret sur la qualité de ton environnement : pour chaque question que je t’ai préparée, liste en
             vrac ce qu’il te vient à l’esprit.
           </p>
 

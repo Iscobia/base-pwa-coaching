@@ -12,7 +12,7 @@ try {
 }
 */
 
-const CACHE_NAME = 'evolution-cache-v1.2.1';
+const CACHE_NAME = 'evolution-cache-v1.2.2';
 const DEFAULT_ICON = '/core/assets/icons/default-192.png';
 
 const urlsToCache = [
@@ -125,9 +125,15 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  const action = event.action || 'view';
+  const action = event.action;
   const data = event.notification.data || {};
   const appUrl = data.url || self.location.origin;
+
+  console.log('[SW] Clic notification :', {
+    action,
+    jour: data.jour,
+    url: appUrl
+  });
 
   event.notification.close();
 
@@ -137,6 +143,7 @@ self.addEventListener('notificationclick', (event) => {
       includeUncontrolled: true
     });
 
+    // ✅ Marquer le défi, sans remettre l’application au premier plan
     if (action === 'mark-done') {
       windowClients.forEach((client) => {
         client.postMessage({
@@ -148,16 +155,46 @@ self.addEventListener('notificationclick', (event) => {
       return;
     }
 
-    const matchingClient = windowClients.find((client) => {
-      return client.url === appUrl;
-    });
+    // ⚙️ Ouvrir directement la zone de dépannage / paramètres
+    if (action === 'settings') {
+      const targetClient = windowClients.find((client) => {
+        return client.url === appUrl;
+      });
 
-    if (matchingClient) {
-      await matchingClient.focus();
+      if (targetClient) {
+        targetClient.postMessage({
+          action: 'OPEN_NOTIFICATION_SETTINGS'
+        });
+
+        await targetClient.focus();
+        return;
+      }
+
+      await clients.openWindow(`${appUrl}#notification-settings`);
       return;
     }
 
-    await clients.openWindow(appUrl);
+    // 👁️ Bouton Voir, ou clic sur le corps de la notification
+    if (action === 'view' || action === '') {
+      const targetClient = windowClients.find((client) => {
+        return client.url === appUrl;
+      });
+
+      if (targetClient) {
+        targetClient.postMessage({
+          action: 'VIEW_CHALLENGE'
+        });
+
+        await targetClient.focus();
+        return;
+      }
+
+      await clients.openWindow(`${appUrl}#challenge`);
+      return;
+    }
+
+    // Sécurité : une action inconnue ne valide jamais le défi
+    console.warn('[SW] Action de notification inconnue :', action);
   })().catch((error) => {
     console.error('[SW] Erreur notificationclick:', error);
   }));
